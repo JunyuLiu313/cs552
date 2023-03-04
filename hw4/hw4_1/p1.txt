@@ -10,3 +10,5 @@ Forwarding occurs becuase andn instructions are followed by other andn instructi
 The following andn instruction's Rt is the same as Rd of previous instruction.
 
 p1-3.asm:
+We test EX-to-MEM forwarding occurs between instructions in line 10 and line 11.
+EX-to-MEM occurs on r4 because there is a store word instr. followed by an ANDN instr.
