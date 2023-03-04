@@ -7,7 +7,7 @@ lbi r0, U.Here
 slbi r0, L.Here     // r0 contains address of ".Here"
 st r2, r0, 0        // .Here should contain the value 0x000E
 ld r3, r0, 0        // r3 = 0x000E
-andn r4, r1, r2     // expected r4 = 0xfff1
+andn r4, r1, r3     // expected r4 = 0xfff1
 halt
 halt
 halt

@@ -1,3 +1,12 @@
 // Write your answer to Problem 1 (b) here
 
-// For p1-1.asm
+For p1-1.asm:
+Between line 9 and 10, we encounter the MEM-to-EX forwarding in r3.
+The forwarding takes place because we have a andn instruction after the laod instruction. And Rd in load instruction is the same as Rt in andn instruction.
+
+p1-2.asm:
+We test EX-to-EX forwarding multiple times from line 9 to 15.
+Forwarding occurs becuase andn instructions are followed by other andn instructions.
+The following andn instruction's Rt is the same as Rd of previous instruction.
+
+p1-3.asm:
