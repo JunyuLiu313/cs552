@@ -1,1 +1,17 @@
 // Write your answer to Problem 2 (b) and (c) here
+b:
+p2-1.asm:
+- In this program we are emulating a while loop. We emulated a while loop to show an example of a scenario
+  where branch not taken prediction is utilized. 
+- In this program we are taking the branch only once(when the loop terminates), and everytime we iterate 
+  through the loop we are saving cycles if we increment the PC using the branch not taken model.
+p2-2.asm:
+- In this program we are emulating a counter. The counter increments the value in the register by 1 while the
+  count is less than 20. This problem demonstartes a use case where the branch taken prediction is better.
+- In this program we are no taking the branch only once(when the incrementer is terminated), and we are taking 
+  the branch everytime we increment the count. We can save a significant amount of cycles when we increment the 
+  PC in accordance with the branch taken prediction model. 
+  
+c:
+No, the branch prediction might take two cycles if the instruction needs to flushed. It would need to flush out the previous instruction. 
+
