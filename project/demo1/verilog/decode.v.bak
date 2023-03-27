@@ -18,7 +18,7 @@ module decode (INSTR, Opcode, imm, RsData, RtData, AluOP, clk, rst, addr, DCaddr
 	output wire [1:0]	AluOP;
 
 	output wire memWrite, memRead;		// control signals for MEM stage
-	output wire savePC;			// true if R7 <- PC + 2
+	output wire savePC;			// control signal for WB stage
 
 	// pass the pc address
 	assign DCaddr = addr;
