@@ -6,26 +6,26 @@
 */
 
 `default_nettype none
-module btr(in, out);
-	input wire [15:0] in;
-	output wire [15:0] out;
+module btr(Rs, Rd);
+	input wire [15:0] Rs;
+	output wire [15:0] Rd;
 
-	assign out[0] = in[15];
-	assign out[1] = in[14];
-	assign out[2] = in[13];
-	assign out[3] = in[12];
-	assign out[4] = in[11];
-	assign out[5] = in[10];
-	assign out[6] = in[9];
-	assign out[7] = in[8];
-	assign out[8] = in[7];
-	assign out[9] = in[6];
-	assign out[10] = in[5];
-	assign out[11] = in[4];
-	assign out[12] = in[3];
-	assign out[13] = in[2];
-	assign out[14] = in[1];
-	assign out[15] = in[0];
+	assign Rd[0] = Rs[15];
+	assign Rd[1] = Rs[14];
+	assign Rd[2] = Rs[13];
+	assign Rd[3] = Rs[12];
+	assign Rd[4] = Rs[11];
+	assign Rd[5] = Rs[10];
+	assign Rd[6] = Rs[9];
+	assign Rd[7] = Rs[8];
+	assign Rd[8] = Rs[7];
+	assign Rd[9] = Rs[6];
+	assign Rd[10] = Rs[5];
+	assign Rd[11] = Rs[4];
+	assign Rd[12] = Rs[3];
+	assign Rd[13] = Rs[2];
+	assign Rd[14] = Rs[1];
+	assign Rd[15] = Rs[0];
 
 endmodule
 `default_nettype wire
