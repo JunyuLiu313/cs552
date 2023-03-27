@@ -5,13 +5,12 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (INSTR, Rs, Rt, Rd, Opcode, imm, RsData, RtData, AluOP, clk, rst);
+module decode (INSTR, Opcode, imm, RsData, RtData, AluOP, clk, rst);
 
 	// TODO: Your code here
 	input wire [15:0] INSTR;
 	input wire clk, rst;
    
-	output wire [2:0] 	Rs, Rt, Rd;
 	output wire [15:0]	RsData, RtData;
 	output wire [4:0] 	Opcode;
 	output wire [16:0] 	imm;
@@ -19,6 +18,7 @@ module decode (INSTR, Rs, Rt, Rd, Opcode, imm, RsData, RtData, AluOP, clk, rst);
 
 
 	//	control singals
+	wire [2:0] Rd, Rt, Rs;
 	wire z_ext_1, z_ext_2, writeRegSel, writeEn, halt, nop, Rd_i, exc;
 	wire [15:0] imm_i, i_1, i_2, writeInData;
 
