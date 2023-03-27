@@ -1,14 +1,14 @@
 /*
-    CS/ECE 552 Spring '23
-    Homework #2, Problem 1
-    
-    A barrel shifter module.  It is designed to shift a number via rotate
-    left, shift left, shift right arithmetic, or shift right logical based
-    on the 'Oper' value that is passed in.  It uses these
-    shifts to shift the value any number of bits.
- */
+	CS/ECE 552 Sprping '23
+	Project demo1
+	
+	ShifterOper = 	00 -> logical shift left
+				01 -> logical shift right
+				10 -> rotate left
+				11 -> rotate right
+*/
 `default_nettype none
-module shifter (InBS, ShAmt, ShiftOper, OutBS);
+module shifter(InBS, ShAmt, ShiftOper, OutBS);
 
     // declare constant for size of inputs, outputs, and # bits to shift
     parameter OPERAND_WIDTH = 16;
@@ -20,8 +20,6 @@ module shifter (InBS, ShAmt, ShiftOper, OutBS);
     input wire [NUM_OPERATIONS-1:0] ShiftOper;  // Operation type
     output wire [OPERAND_WIDTH -1:0] OutBS;  // Result of shift/rotate
 
-   /* YOUR CODE HERE */
-	
 	// left barrel shifter
 	// If ShiftOper[1] is 1, rotate left.
 	// If ShiftOper[1] is 0, shift left.
@@ -42,22 +40,25 @@ module shifter (InBS, ShAmt, ShiftOper, OutBS);
 
 	// right barrel shifter
 	// if ShiftOper[1] is 0, logical shift right
-	// if ShiftOper[1] is 1, arithmetic shift right
+	// if ShiftOper[1] is 1, rotate right
 	wire [OPERAND_WIDTH-1:0] rShftTemp1, rShftTemp2, rShftTemp3, rShftTemp4;
 	wire leftFill;
-	assign leftFill = (ShiftOper[1]) ? InBS[15] : 1'b0;
 	// Shift by 1
+	assign leftFill = (ShiftOper[1]) ? InBS[0] : 1'b0;
 	assign rShftTemp1 = (ShAmt[0]) ? {leftFill, InBS[15:1]} : InBS;
 	// Shift by 2
-	assign rShftTemp2 = (ShAmt[1]) ? {{2{leftFill}}, rShftTemp1[15:2]} : rShftTemp1;
+	wire[1:0] leftFill2 = (ShiftOper[1]) ? rShftTemp1[1:0] : 2'b00;
+	assign rShftTemp2 = (ShAmt[1]) ? {leftFill2, rShftTemp1[15:2]} : rShftTemp1;
 	// Shift by 4
-	assign rShftTemp3 = (ShAmt[2]) ? {{4{leftFill}}, rShftTemp2[15:4]} : rShftTemp2;
+	wire[3:0] leftFill3 = (ShiftOper[1]) ? rShftTemp2[3:0] : 4'b0;
+	assign rShftTemp3 = (ShAmt[2]) ? {leftFill3, rShftTemp2[15:4]} : rShftTemp2;
 	// Shift by 8
-	assign rShftTemp4 = (ShAmt[3]) ? {{8{leftFill}}, rShftTemp3[15:8]} : rShftTemp3;
+	wire[7:0] leftFill4 = (ShiftOper[1]) ? rShftTemp3[7:0] : 8'b0;
+	assign rShftTemp4 = (ShAmt[3]) ? {leftFill3, rShftTemp3[15:8]} : rShftTemp3;
 
 	// if ShiftOper[0] is 0, we use left barrel shifter
 	// if ShiftOper[0] is 1, we use right barrel shifter
 	assign OutBS = (ShiftOper[0]) ? rShftTemp4 : leftShTemp4;
-   
+
 endmodule
 `default_nettype wire
