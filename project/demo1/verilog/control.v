@@ -3,12 +3,26 @@ module control( //  input
                 INSTR,
                 //  outputs
                 halt, nop, MemRead, RegWrite, MemWrite, MemToReg, jump, JR, branch,
-                savePC, RTI, SIIC, OPCODE, FUNC, Rs, Rd, Rt, ZeroExt1, ZeroExt2);
+                savePC, RTI, SIIC, OPCODE, FUNC, Rs, Rd, Rt, ZeroExt1, ZeroExt2,
+                resultSel);
 
 input wire [15:0] INSTR;
+output wire [1:0] resultSel;
 output wire halt, nop, RegWrite, MemRead, OPCODE, FUNC, Rs, Rd, Rt;
 output wire MemWrite, MemToReg, savePC, RTI, SIIC, JR, jump, branch, ZeroExt1, ZeroExt2;   
 
+wire i1, i2, j, r;
+wire [1:0] resultSel_i;
+assign i1 = (INSTR[15] & !(|INSTR[14:13]) & !((INSTR[12]) & ~INSTR[11])) |
+            (INSTR[15] & ~INSTR[14] & INSTR[13])|
+            (~INSTR[15] & INSTR[14] & ~INSTR[13]);
+assign i2 = (~INSTR[15] & INSTR[14] & INSTR[13])        |
+            (!(|INSTR[15:14]) & INSTR[13] & INSTR[11])  |
+            (INSTR[15] & ~INSTR[13] & ~INSTR[11] & (INSTR[14] ^ INSTR[12]));
+assign j =  (!(|INSTR[15:14]) & INSTR[13] & ~INSTR[11]);
+assign r =  (&INSTR[15:14]);
+assign resultSel_i  = r | i1 ? 2'b00 : 2'b10;
+assign resultSel    = r | i2 ? resultSel_i : {resultSel_i[1], 1'b1};
 assign halt     = !(|INSTR[15:11]);
 assign nop      = (!(|INSTR[15:12])&INSTR[11]);
 assign SIIC     = !(|INSTR[15:13]) & INSTR[12] & ~INSTR[11];

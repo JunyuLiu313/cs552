@@ -10,15 +10,15 @@ module decode(  //  inputs
                 //  outputs
                 RsData, RtData, Imm, currPC, OPCODE, FUNC,
                 //  control signals
-                halt, nop, MemRead, MemWrite, MemToReg, branch savePC,
-                err);
+                halt, nop, MemRead, MemWrite, MemToReg, branch, savePC,
+                err, resultSel);
 
 input wire [15:0] INSTR, PC, WBdata;
 input wire clk, rst;
 
 output wire [15:0] RsData, RtData, Imm, currPC;
 output wire [4:0] OPCODE;
-output wire [1:0] FUNC;
+output wire [1:0] FUNC, resultSel;
 output wire err;
 //  Control signals
 //  RegWrite = RF.writeEn Rd = writeRegSel
@@ -37,7 +37,7 @@ control CS( //  input
             //  outputs
             .halt(halt), .nop(nop), .MemRead(MemRead), .RegWrite(RegWrite), 
             .MemWrite(MemWrite), .MemToReg(MemToReg), .jump(jump), .JR(JR), 
-            .savePC(savePC), .RTI(RTI), .SIIC(SIIC), .OPCODE(OPCODE), 
+            .savePC(savePC), .RTI(RTI), .SIIC(SIIC), .OPCODE(OPCODE), .resultSel(resultSel),
             .FUNC(FUNC), .Rs(Rs), .Rd(Rd), .Rt(Rt), .ZeroExt1(ZeroExt1), .ZeroExt2(ZeroExt2), .branch(branch));
 
 rf_bypass RF(//  inputs
