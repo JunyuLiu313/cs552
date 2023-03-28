@@ -63,7 +63,7 @@ module alu(Rs, Rt, instr, op, Rd);
 			(instr[1]) ? tempRd :
 			btrRd;
 
-	// check zero
+	// needed a zero flag for the future
 	
 
 endmodule

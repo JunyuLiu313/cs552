@@ -1,0 +1,53 @@
+/*
+   CS/ECE 552 Spring '22
+  
+   Filename        : alu_i1.v
+   Description     : This is the module for the ALU opeartion for I-format 1 instructions
+*/
+
+`default_nettype none
+module alu_i2(Rs, Imm, instr, curPC, newPC, newRs, newR7, branch);
+	// inputs
+	input wire [15:0] Rs, Imm;
+	input wire [4:0] instr;
+	input wire [15:0] curPC;
+	input wire branch;
+
+	// outputs
+	output wire [15:0] newPC;
+	output wire [15:0] newRs;
+	output wire [15:0] newR7;
+	
+	// assign new R7 value for JALR instruction
+	cla16b adder1(.sum(newR7), .cOut(), .inA(curPC), .inB(16'h2), .cIn(1'b0));	
+
+	// branch instructions
+	wire [15:0] branchTakenPC;		// calculate the PC value when we take the branch
+	cla16b adder2(.sum(branchTakenPC), .cOut(), .inA(newR7), .inB(Imm), .cIn(1'b0));	
+	wire [15:0] branchPC;			// PC value for branch instructions
+	wire [15:0] beqPC, bnePC, bltPC, bgePC;	// PC values for BEQZ, BNEZ, BLTZ, BGEZ
+	assign beqPC = (Rs == 16'b0) ? branchTakenPC : curPC;
+	assign bnePC = (Rs != 16'b0) ? branchTakenPC : curPC;
+	assign bltPC = (Rs[15]) ? branchTakenPC : curPC;
+	assign bgePC = (~Rs[15]) ? branchTakenPC : curPC;
+	assign branchPC = (instr[1]) ? ((instr[0]) ? bgePC : bltPC)
+			: ((instr[0]) ? bnePC : beqPC);
+	
+		
+	// LBI and SLBI instructions
+	wire [15:0] shiftRs;
+	shifter iShifter(.InBS(Rs), .ShAmt(4'b1000), .ShifterOper(2'b00), .OutBS(shiftRs));
+	assign newRs = (instr[1]) ? (shiftRs | Imm) : Imm;
+	
+
+	// JR and JALR instructions
+	wire [15:0] jumpPC;
+	cla16b adder3(.sum(jumpPC), .cOut(), .inA(Rs), .inB(Imm), .cIn(1'b0));
+	
+	// update the PC value
+	assign newPC = (branch) ? branchPC : jumpPC;
+	
+
+
+endmodule
+`default_nettype wire
