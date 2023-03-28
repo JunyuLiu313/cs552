@@ -6,7 +6,7 @@
 */
 
 `default_nettype none
-module alu_i2(Rs, Imm, instr, curPC, newPC, newRs, newR7, branch);
+module alu_i2(Rs, Imm, instr, curPC, newPC, writeData, branch);
 	// inputs
 	input wire [15:0] Rs, Imm;
 	input wire [4:0] instr;
@@ -15,8 +15,10 @@ module alu_i2(Rs, Imm, instr, curPC, newPC, newRs, newR7, branch);
 
 	// outputs
 	output wire [15:0] newPC;
-	output wire [15:0] newRs;
-	output wire [15:0] newR7;
+	output wire [15:0] writeData;
+
+	wire [15:0] newRs;
+	wire [15:0] newR7;
 	
 	// assign new R7 value for JALR instruction
 	cla16b adder1(.sum(newR7), .cOut(), .inA(curPC), .inB(16'h2), .cIn(1'b0));	
@@ -38,6 +40,9 @@ module alu_i2(Rs, Imm, instr, curPC, newPC, newRs, newR7, branch);
 	wire [15:0] shiftRs;
 	shifter iShifter(.InBS(Rs), .ShAmt(4'b1000), .ShifterOper(2'b00), .OutBS(shiftRs));
 	assign newRs = (instr[1]) ? (shiftRs | Imm) : Imm;
+
+	// choose either Rs or R7 as the output for write data
+	assign writeData = (instr[4]) ? newRs : newR7;
 	
 
 	// JR and JALR instructions

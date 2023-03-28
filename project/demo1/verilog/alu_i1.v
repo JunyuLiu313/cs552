@@ -6,17 +6,17 @@
 */
 
 `default_nettype none
-module alu_i1(Rs, imm, instr, Rd, memAddr, newRs, memRead, memWrite);
+module alu_i1(Rs, imm, instr, Rd, memAddr, memRead, memWrite);
 	input wire[15:0] Rs, imm;
 	input wire [4:0] instr;				// the 5-bit opcode
-	output wire [15:0] Rd;
+	output wire [15:0] Rd;				// the write-back data: either Rd or updated Rs
 
 	output wire [15:0] memAddr;			// address for memory
-	output wire [15:0] newRs;			// updated Rs for STU instruction
 
 	// how to assign Rs for memory write
 	input wire memRead, memWrite;
 	
+
 	wire [15:0] inRs = (instr[0]) ? ~Rs : Rs;
 	wire [15:0] inImm = (instr[0]) ? ~imm : imm;
 	wire [15:0] sumResult, xorResult, andnResult;
@@ -38,8 +38,12 @@ module alu_i1(Rs, imm, instr, Rd, memAddr, newRs, memRead, memWrite);
 	wire memCout;
 	cla16b adder2(.sum(memAddr), .cOut(memCout), .inA(imm), .inB(Rs), .cIn(1'b0));	
 
+	wire [15:0] newRs;			// updated Rs for STU instruction
+	cla16b adder3(.sum(newRs), .cOut(), .inA(imm), .inB(Rs), .cIn(1'b0));	
+
 	// assign Rd value for instructions except those with memory interation
 	assign Rd = (instr[4]) ? shiftRd : operRd;
+	assign Rd = (instr == 5'b10011) ? newRs : Rd;
 
 endmodule
 `default_nettype wire
