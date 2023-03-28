@@ -6,7 +6,7 @@
 */
 
 `default_nettype none
-module alu_i2(Rs, Imm, instr, curPC, newPC, writeData, branch);
+module alu_i2(Rs, Imm, instr, curPC, newPC, writeData, branch, err);
 	// inputs
 	input wire [15:0] Rs, Imm;
 	input wire [4:0] instr;
@@ -16,6 +16,7 @@ module alu_i2(Rs, Imm, instr, curPC, newPC, writeData, branch);
 	// outputs
 	output wire [15:0] newPC;
 	output wire [15:0] writeData;
+	output wire err;
 
 	wire [15:0] newRs;
 	wire [15:0] newR7;
@@ -51,8 +52,13 @@ module alu_i2(Rs, Imm, instr, curPC, newPC, writeData, branch);
 	
 	// update the PC value
 	assign newPC = (branch) ? branchPC : jumpPC;
-	
 
+	// check for the overflow error
+	wire ov1, ov2, ov3;
+	assign ov1 = (~curPC[15]) ? ((~newR7[15]) ? 1'b1 : 1'b0) : 1'b0;
+	assign ov2 = (Imm[15] == newR7[15]) ? ((Imm[15] != branchTakenPC[15]) ? 1'b1 : 1'b0) : 1'b0;
+	assign ov3 = (Imm[15] == Rs[15]) ? ((Imm[15] != jumpPC[15]) ? 1'b1 : 1'b0) : 1'b0;
+	assign err = (instr == 5'b00111) ? (ov1 | ov3) : ((instr[3]) ? ov2 : ov3);
 
 endmodule
 `default_nettype wire

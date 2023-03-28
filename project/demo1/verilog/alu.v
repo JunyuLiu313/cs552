@@ -6,12 +6,13 @@
 */
 
 `default_nettype none
-module alu(Rs, Rt, instr, op, Rd);
+module alu(Rs, Rt, instr, op, Rd, err);
 
 	input wire [15:0] Rs, Rt;
 	input wire [4:0] instr;
 	input wire [1:0] op;
 	output wire[15:0] Rd;
+	output wire err;
 	
 
 	// Invert Rs or Rt before operation if needed
@@ -62,6 +63,12 @@ module alu(Rs, Rt, instr, op, Rd);
 			(~instr[0]) ? shiftResult :
 			(instr[1]) ? tempRd :
 			btrRd;
+
+	// check the overflow errors
+	wire ov1, ov2;
+	// assign ov1 = (inRt[15] == inRs[15]) ? ((addResult[15] != inRs[15]) ? 1'b1 : 1'b0) : 1'b0;
+	assign ov2 = (Rt[15] == ~Rs[15]) ? ((ofSum[15] != Rt[15]) ? 1'b1 : 1'b0) : 1'b0;
+	assign err = ov2;
 
 	// needed a zero flag for the future
 	

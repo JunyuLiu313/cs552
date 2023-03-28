@@ -24,16 +24,17 @@ module execute (
 	// temps for all the writeData from the ALUs
 	wire [15:0] r_wData, j_wData, i1_wData, i2_wData;
 	wire [15:0] j_PC, i2_PC;
+	wire [15:0] r_err, j_err, i1_err, i2_err;
 	
 	// writeData will be chosen from Rd, updated Rs, or R7
 	// The next PC value will either be PC+2 or result from coresponding ALU
 	// Memory address will only be calculated from I-1 type instruction
 	
 	// calling each ALU
-	alu r_ALU(.Rs(Rs), .Rt(Rt), .instr(opcode), .op(FUNC), .Rd(r_wData));								// R-type
-	alu_i1 i1_ALU(.Rs(Rs), .imm(Imm), .instr(opcode), .Rd(i1_wData), .memAddr(MemAddr), .memRead(MemRead), .memWrite(MemWrite));	// I1-type
-	alu_j j_ALU(.instr(opcode), .curPC(currPC), .imm(Imm), .nxtPC(j_PC), .newR7(j_wData));						// J-type
-	alu_i2 i2_ALU(.Rs(Rs), .Imm(Imm), .instr(opcode), .curPC(currPC), .newPC(i2_PC), .writeData(i2_wData), .branch(branch));	// I2-type
+	alu r_ALU(.Rs(Rs), .Rt(Rt), .instr(opcode), .op(FUNC), .Rd(r_wData), .err(r_err));								// R-type
+	alu_i1 i1_ALU(.Rs(Rs), .imm(Imm), .instr(opcode), .Rd(i1_wData), .memAddr(MemAddr), .memRead(MemRead), .memWrite(MemWrite), .err(i1_err));	// I1-type
+	alu_j j_ALU(.instr(opcode), .curPC(currPC), .imm(Imm), .nxtPC(j_PC), .newR7(j_wData), .err(j_err));						// J-type
+	alu_i2 i2_ALU(.Rs(Rs), .Imm(Imm), .instr(opcode), .curPC(currPC), .newPC(i2_PC), .writeData(i2_wData), .branch(branch), .err(i2_err));		// I2-type
 
 	/*
 	  choose the write data from ALUs
@@ -49,6 +50,8 @@ module execute (
 	cla16b adder1(.sum(normalPC), .cOut(), .inA(currPC), .inB(16'h2), .cIn(1'b0));
 	assign nxtPC = (resultSel[1]) ? ((resultSel[0]) ? j_PC : i2_PC) : normalPC;
 	
+	// chooose the error signal
+	assign ex_err = (resultSel[1]) ? ((resultSel[0]) ? j_err : i2_err) : ((resultSel[0]) ? i1_err : r_err);
    
 endmodule
 `default_nettype wire
