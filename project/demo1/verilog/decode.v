@@ -10,7 +10,7 @@ module decode(  //  inputs
                 //  outputs
                 RsData, RtData, Imm, currPC, OPCODE, FUNC,
                 //  control signals
-                halt, nop, MemRead, MemWrite, MemToReg, JR, jump, savePC,
+                halt, nop, MemRead, MemWrite, MemToReg, branch savePC,
                 err);
 
 input wire [15:0] INSTR, PC, WBdata;
@@ -22,8 +22,8 @@ output wire [1:0] FUNC;
 output wire err;
 //  Control signals
 //  RegWrite = RF.writeEn Rd = writeRegSel
-output wire halt, nop, MemRead, MemWrite, MemToReg, JR, jump, savePC;
-wire ZeroExt1, ZeroExt2, RTI, SIIC, RegWrite;
+output wire halt, nop, MemRead, MemWrite, MemToReg, branch, savePC;
+wire ZeroExt1, ZeroExt2, RTI, SIIC, RegWrite, jump, JR;
 wire [2:0] Rd, Rt, Rs;
 
 dff PC_D [15:0]
@@ -38,20 +38,20 @@ control CS( //  input
             .halt(halt), .nop(nop), .MemRead(MemRead), .RegWrite(RegWrite), 
             .MemWrite(MemWrite), .MemToReg(MemToReg), .jump(jump), .JR(JR), 
             .savePC(savePC), .RTI(RTI), .SIIC(SIIC), .OPCODE(OPCODE), 
-            .FUNC(FUNC), .Rs(Rs), .Rd(Rd), .Rt(Rt), .ZeroExt1(ZeroExt1), .ZeroExt2(ZeroExt2));
+            .FUNC(FUNC), .Rs(Rs), .Rd(Rd), .Rt(Rt), .ZeroExt1(ZeroExt1), .ZeroExt2(ZeroExt2), .branch(branch));
 
-rf_bypass RF(// inputs
+rf_bypass RF(//  inputs
             .clk(clk), .rst(rst), .read1RegSel(Rs), .read2RegSel(Rt),
              .writeRegSel(Rd), .writeInData(WBdata), .writeEn(RegWrite),
             //  outputs
             .read1OutData(RsData), .read2OutData(RtData), .err(err));
 
 wire [15:0] Imm_i, i1, i2;
-	assign i1 	 =  ZeroExt1 ? {{11{1'b0}}, INSTR[4:0]} : {{11{INSTR[4]}}, INSTR[4:0]}; 
-	assign i2 	 =  ZeroExt2 ? {{8{1'b0}}, INSTR[7:0]}	: {{8{INSTR[7]}},INSTR[7:0]};
-	assign Imm_i =  ((INSTR[15]&~INSTR[14])|(~INSTR[15]&INSTR[14]&~INSTR[13])   |
-                    (~INSTR[15]&~INSTR[14]&INSTR[13]&~INSTR[12]&INSTR[11])      |
-                    (~INSTR[15]&~INSTR[14]&INSTR[13]&INSTR[12]&INSTR[11])) ? i1 : i2;
-	assign Imm 	 =  (~INSTR[15]&~INSTR[14]&INSTR[13]) ? {{5{INSTR[10]}}, INSTR[10:0]} : Imm_i;
+assign i1 	 =  ZeroExt1 ? {{11{1'b0}}, INSTR[4:0]} : {{11{INSTR[4]}}, INSTR[4:0]}; 
+assign i2 	 =  ZeroExt2 ? {{8{1'b0}}, INSTR[7:0]}	: {{8{INSTR[7]}},INSTR[7:0]};
+assign Imm_i =  ((INSTR[15]&~INSTR[14])|(~INSTR[15]&INSTR[14]&~INSTR[13])   |
+                (~INSTR[15]&~INSTR[14]&INSTR[13]&~INSTR[12]&INSTR[11])      |
+                (~INSTR[15]&~INSTR[14]&INSTR[13]&INSTR[12]&INSTR[11])) ? i1 : i2;
+assign Imm 	 =  (~INSTR[15]&~INSTR[14]&INSTR[13]) ? {{5{INSTR[10]}}, INSTR[10:0]} : Imm_i;
 
 endmodule

@@ -2,18 +2,19 @@
 module control( //  input
                 INSTR,
                 //  outputs
-                halt, nop, MemRead, RegWrite, MemWrite, MemToReg, jump, JR,  
+                halt, nop, MemRead, RegWrite, MemWrite, MemToReg, jump, JR, branch,
                 savePC, RTI, SIIC, OPCODE, FUNC, Rs, Rd, Rt, ZeroExt1, ZeroExt2);
 
 input wire [15:0] INSTR;
 output wire halt, nop, RegWrite, MemRead, OPCODE, FUNC, Rs, Rd, Rt;
-output wire MemWrite, MemToReg, savePC, RTI, SIIC, JR, jump, ZeroExt1, ZeroExt2;   
+output wire MemWrite, MemToReg, savePC, RTI, SIIC, JR, jump, branch, ZeroExt1, ZeroExt2;   
 
 assign halt     = !(|INSTR[15:11]);
 assign nop      = (!(|INSTR[15:12])&INSTR[11]);
 assign SIIC     = !(|INSTR[15:13]) & INSTR[12] & ~INSTR[11];
 assign RTI      = !(|INSTR[15:13]) & INSTR[12] & INSTR[11];
 assign savePC   = (!(|INSTR[15:13]) & INSTR[12] & ~INSTR[11]) | (!(|INSTR[15:14]) & INSTR[13:12]);
+assign branch   = (&INSTR[14:13]) & ~INSTR[15];
 assign jump     = (~INSTR[15] & (&INSTR[14:13])); 
 assign JR       = !(|INSTR[15:14]) & INSTR[13] & INSTR[11];
 assign MemWrite = ((!(|INSTR[14:11])) | (&INSTR[12:11] & !(|INSTR[14:13]))) & INSTR[15];
