@@ -15,7 +15,7 @@ module proc (/*AUTOARG*/
    output reg err;
 
    // None of the above lines can be modified
-
+   
    // OR all the err ouputs for every sub-module and assign it as this
    // err output
    
