@@ -80,12 +80,11 @@ module rf (
 	dff idiff6 [REGISTER_WIDTH-1:0] (.q(registers[6]), .d(writeData6), .clk(clk), .rst(rst));
 	dff idiff7 [REGISTER_WIDTH-1:0] (.q(registers[7]), .d(writeData7), .clk(clk), .rst(rst));
 
-	// check errors
-	wire [3+SEL_WIDTH*3+REGISTER_WIDTH-1:0] errData;
-	chErr ichErr0 [3+SEL_WIDTH*3+REGISTER_WIDTH-1:0] (.err(errData), .in({clk, rst, read1RegSel, 
-						read2RegSel, writeRegSel, writeInData, writeEn}));
-	assign err = |errData;
-	
+	err_chk D_ERR(//Inputs
+                .clk(clk), .rst(rst), .read1RegSel(read1RegSel), .read2RegSel(read2RegSel), 
+				.writeRegSel(read2RegSel), .writeInData(writeInData), .writeEn(writeEn),
+                //Outputs
+                .err(err));
 
 endmodule
 `default_nettype wire

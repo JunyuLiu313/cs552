@@ -1,6 +1,6 @@
 /*
     CS/ECE 552 Spring '23
-    Homework #1, Problem 2
+    Homework #1, Problem 1
 
     2 input NAND
 */

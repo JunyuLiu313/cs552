@@ -23,21 +23,24 @@ module alu(Rs, Rt, instr, op, Rd, err);
 	// addition operation
 	wire [15:0] addResult;
 	wire Cout, Cin;
-	assign Cin = (op[0]) ? 1'b1 : 1'b0;
-	cla16b adder1(.sum(addResult), .cOut(Cout), .inA(InRs), .inB(InRt), .cIn(Cin));
+	assign Cin = op[0];
+	cla16b adder1(.sum(addResult), .cOut(Cout), .inA(InRs), .inB(Rt), .cIn(Cin));
 	
 	// and operation
-	wire [15:0] andResult = InRs & InRt;
+	wire [15:0] andResult;
+	assign andResult = Rs & InRt;
 
 	// xor operation
-	wire [15:0] xorResult = InRs ^ InRt;
+	wire [15:0] xorResult;
+	assign xorResult = Rs ^ Rt;
 
 	// mux for selecting the first four instruction from R-format instruction list
-	wire [15:0] tempRd = (op[1]) ? ((op[0]) ? andResult : xorResult) : addResult;
+	wire [15:0] tempRd;
+	assign tempRd = (op[1]) ? ((op[0]) ? andResult : xorResult) : addResult;
 	
 	// shift operations
 	wire [15:0] shiftResult;
-	shifter iShifter(.InBS(Rs), .ShAmt(Rt[3:0]), .ShifterOper(op[1:0]), .OutBS(shiftResult));
+	shifter iShifter(.InBS(Rs), .ShAmt(Rt[3:0]), .ShiftOper(op[1:0]), .OutBS(shiftResult));
 	
 	
 	// comparator for Rs and Rt
@@ -56,7 +59,7 @@ module alu(Rs, Rt, instr, op, Rd, err);
 
 	// BTR instruction
 	wire [15:0] btrRd;
-	btr iBTR(.Rd(Rd), .Rs(Rs));
+	btr iBTR(.Rd(btrRd), .Rs(Rs));
 
 	// finalize Rd value
 	assign Rd = 	(instr[2]) ? compareRd :

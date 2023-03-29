@@ -17,22 +17,21 @@ module alu_i1(Rs, imm, instr, Rd, memAddr, memRead, memWrite, err);
 	input wire memRead, memWrite;
 	
 	wire [15:0] inRs = (instr[0]) ? ~Rs : Rs;
-	// wire [15:0] inImm = (instr[0]) ? ~imm : imm;
+	wire [15:0] inImm = (instr[0]) ? ~imm : imm;
 	wire [15:0] sumResult, xorResult, andnResult;
 	wire cOut;
 	// get either ADDI or SUBI instruction result
 	cla16b adder1(.sum(sumResult), .cOut(cOut), .inA(imm), .inB(inRs), .cIn(instr[0]));
 	
 	assign xorResult = Rs ^ imm;		// XORI result
-	assign andnResult = Rs & ~imm;		// ANDNI result
+	assign andnResult = Rs & inImm;		// ANDNI result
 	
 	// choose the Rd from ADDI, SUBI, XORI, ANDNI
-	wire [15:0] operRd;
-	assign operRd = (instr[1]) ? ((instr[0]) ? andnResult : xorResult) : sumResult;
+	wire [15:0] operRd = (instr[1]) ? ((instr[0]) ? andnResult : xorResult) : sumResult;
 
 	// shifter instructio result
 	wire [15:0] shiftRd;
-	shifter iShifter(.InBS(Rs), .ShAmt(imm[3:0]), .ShiftOper({~instr[0], instr[1]}), .OutBS(shiftRd));
+	shifter iShifter(.InBS(Rs), .ShAmt(imm[3:0]), .ShifterOper({~instr[0], instr[1]}), .OutBS(shiftRd));
 	
 	// calculate memory address
 	wire memCout;
@@ -42,9 +41,8 @@ module alu_i1(Rs, imm, instr, Rd, memAddr, memRead, memWrite, err);
 	cla16b adder3(.sum(newRs), .cOut(), .inA(imm), .inB(Rs), .cIn(1'b0));	
 
 	// assign Rd value for instructions except those with memory interation
-	// assign Rd = (instr[4]) ? shiftRd : operRd;
-	assign Rd = (instr == 5'b10011) ? newRs : ((instr[4]) ? shiftRd : operRd);
-
+	assign Rd = (instr[4]) ? shiftRd : operRd;
+	assign Rd = (instr == 5'b10011) ? newRs : Rd;
 
 	// check the overflow for all additions
 	wire of1, of2, of3;

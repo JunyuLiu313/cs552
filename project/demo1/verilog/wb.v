@@ -6,16 +6,16 @@
 */
 `default_nettype none
 module wb ( // inputs
-            MemtoReg, aluResult, memResult, 
+            clk, rst, MemtoReg, exResult, memResult, 
             // outputs
             wbResult);
 
-input wire MemtoReg;
-input wire [15:0] aluResult, memResult;
+input wire MemtoReg, clk, rst;
+input wire [15:0] exResult, memResult;
 
 output wire [15:0] wbResult;
 
-assign wbResult = MemtoReg ? memResult : aluResult;
+assign wbResult = MemtoReg ? memResult : exResult;
 
    
 endmodule

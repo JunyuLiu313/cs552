@@ -24,7 +24,7 @@ module execute (
 	// temps for all the writeData from the ALUs
 	wire [15:0] r_wData, j_wData, i1_wData, i2_wData;
 	wire [15:0] j_PC, i2_PC;
-	wire [15:0] r_err, j_err, i1_err, i2_err;
+	wire r_err, j_err, i1_err, i2_err;
 	
 	// writeData will be chosen from Rd, updated Rs, or R7
 	// The next PC value will either be PC+2 or result from coresponding ALU
@@ -48,7 +48,9 @@ module execute (
 	// choose the next PC value
 	wire [15:0] normalPC;
 	cla16b adder1(.sum(normalPC), .cOut(), .inA(currPC), .inB(16'h2), .cIn(1'b0));
-	assign nxtPC = (resultSel[1]) ? ((resultSel[0]) ? j_PC : i2_PC) : normalPC;
+	// assign nxtPC = (resultSel[1]) ? ((resultSel[0]) ? j_PC : i2_PC) : normalPC;
+	// assign nxtPC = (~opcode[4] & opcode[2]) ? ((opcode[3]) ? i2_PC : j_PC) : normalPC;
+	assign nxtPC = (resultSel == 2'b11) ? j_PC : ((resultSel == 2'b10) ? ((~opcode[4]) ? i2_PC : normalPC) : normalPC);
 	
 	// chooose the error signal
 	assign ex_err = (resultSel[1]) ? ((resultSel[0]) ? j_err : i2_err) : ((resultSel[0]) ? i1_err : r_err);

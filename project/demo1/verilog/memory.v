@@ -13,7 +13,7 @@ input wire halt, MemWrite, MemRead, clk, rst;
 
 output wire [15:0] ReadData;
 
-memory2c (.data_out(ReadData), .data_in(WriteData), .addr(Addr),
+memory2c D_MEM (.data_out(ReadData), .data_in(WriteData), .addr(Addr),
           .enable(MemRead|MemWrite), .wr(MemWrite), .createdump(halt), .clk(clk), .rst(rst));
    
 endmodule
