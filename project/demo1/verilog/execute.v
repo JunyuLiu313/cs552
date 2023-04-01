@@ -7,7 +7,7 @@
 `default_nettype none
 module execute (
 	// inputs
-	opcode, Rs, Rt, Imm, currPC, FUNC, halt, nop, MemRead, MemWrite, MemtoReg, branch, resultSel,
+	clk, rst, opcode, Rs, Rt, Imm, currPC, FUNC, halt, nop, MemRead, MemWrite, MemtoReg, branch, resultSel,
 	// outputs
 	writeData, nxtPC, MemAddr, ex_err
 );
@@ -16,7 +16,7 @@ module execute (
 	input wire [4:0] opcode;
 	input wire [15:0] Rs, Rt, Imm, currPC;
 	input wire [1:0] FUNC, resultSel;
-	input wire halt, nop, MemRead, MemWrite, MemtoReg, branch;
+	input wire clk, rst,  halt, nop, MemRead, MemWrite, MemtoReg, branch;
 	
 	output wire [15:0] writeData, nxtPC, MemAddr;
 	output wire ex_err;

@@ -28,8 +28,8 @@ module rf_bypass (
 	wire [REGISTER_WIDTH-1:0] temp1, temp2;
 	rf irf(.clk(clk), .rst(rst), .writeEn(writeEn), .read1RegSel(read1RegSel), .read2RegSel(read2RegSel),
 			.writeRegSel(writeRegSel), .writeInData(writeInData), .read1OutData(temp1), .read2OutData(temp2), .err(err));
-	assign read1OutData = (writeEn) ? ((read1RegSel == writeRegSel) ? writeInData : temp1) : temp1;
-	assign read2OutData = (writeEn) ? ((read2RegSel == writeRegSel) ? writeInData : temp2) : temp2;
+	assign read1OutData = temp1; //(writeEn) ? ((read1RegSel == writeRegSel) ? writeInData : temp1) : temp1;
+	assign read2OutData = temp2; //(writeEn) ? ((read2RegSel == writeRegSel) ? writeInData : temp2) : temp2;
 
 endmodule
 `default_nettype wire

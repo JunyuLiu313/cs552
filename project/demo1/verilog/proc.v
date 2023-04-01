@@ -34,15 +34,15 @@ module proc (/*AUTOARG*/
    
    
    execute execute0 
-               (  .opcode(OPCODE), .Rs(RsData), .Rt(RtData), .Imm(Imm), .currPC(currPC),
+               (  .clk(clk), .rst(rst), .opcode(OPCODE), .Rs(RsData), .Rt(RtData), .Imm(Imm), .currPC(currPC),
                   .FUNC(FUNC), .halt(halt), .nop(nop), .MemRead(MemRead), 
                   .MemWrite(MemWrite), .MemtoReg(MemToReg), .branch(branch), .resultSel(resultSel),
 	               // outputs
-	               .writeData(writeData), .nxtPC(PC), .MemAddr(MemAddr), .ex_err(ex_err));
+	           .writeData(writeData), .nxtPC(PC), .MemAddr(MemAddr), .ex_err(ex_err));
    
 
    memory memory0 
-               (  .Addr(MemAddr), .WriteData(writeData), .halt(halt), .MemWrite(MemWrite),
+               (  .Addr(MemAddr), .WriteData(RtData), .halt(halt), .MemWrite(MemWrite),
                   .MemRead(MemRead), .ReadData(ReadData), .clk(clk), .rst(rst));
 
    

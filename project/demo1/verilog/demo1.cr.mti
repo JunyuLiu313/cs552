@@ -1,157 +1,267 @@
-D:/cs552/projectDemo1/verilog/alu_j.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/alu_j.v
+D:/cs552/projectDemo1/verilog/xor2.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/xor2.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module xor2
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/xor2.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/xor2.v
+Top level modules:
+	xor2
+
+} {} {}} D:/cs552/projectDemo1/verilog/or2.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/or2.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module or2
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/or2.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/or2.v
+Top level modules:
+	or2
+
+} {} {}} D:/cs552/projectDemo1/verilog/alu_j.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/alu_j.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module alu_j
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/clkrst.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/clkrst.v
+Top level modules:
+	alu_j
+
+} {} {}} D:/cs552/projectDemo1/verilog/clkrst.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/clkrst.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module clkrst
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/decode.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/decode.v
+Top level modules:
+	clkrst
+
+} {} {}} D:/cs552/projectDemo1/verilog/proc.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/proc.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module proc
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/proc.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/proc.v
+Top level modules:
+	proc
+
+} {} {}} D:/cs552/projectDemo1/verilog/or3.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/or3.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module or3
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/or3.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/or3.v
+Top level modules:
+	or3
+
+} {} {}} D:/cs552/projectDemo1/verilog/decode.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/decode.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module decode
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/xor3.v {0 {vlog -work work -stats=none {D:\cs552\projectDemo1\verilog\xor3.v}
+Top level modules:
+	decode
+
+} {} {}} D:/cs552/projectDemo1/verilog/xor3.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/xor3.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module xor3
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/and2.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/and2.v
+Top level modules:
+	xor3
+
+} {} {}} D:/cs552/projectDemo1/verilog/and2.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/and2.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module and2
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/err_chk.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/err_chk.v
+Top level modules:
+	and2
+
+} {} {}} D:/cs552/projectDemo1/verilog/cla4b.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/cla4b.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module cla4b
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/memory2c.syn.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/memory2c.syn.v
+Top level modules:
+	cla4b
+
+} {} {}} D:/cs552/projectDemo1/verilog/and3.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/and3.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module and3
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/cla4b.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/cla4b.v
+Top level modules:
+	and3
+
+} {} {}} D:/cs552/projectDemo1/verilog/memory2c.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/memory2c.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module memory2c
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/and3.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/and3.v
+Top level modules:
+	memory2c
+
+} {} {}} D:/cs552/projectDemo1/verilog/memory2c.syn.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/memory2c.syn.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module memory2c
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/memory2c.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/memory2c.v
+Top level modules:
+	memory2c
+
+} {} {}} D:/cs552/projectDemo1/verilog/err_chk.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/err_chk.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module err_chk
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/rf_hier.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/rf_hier.v
+Top level modules:
+	err_chk
+
+} {} {}} D:/cs552/projectDemo1/verilog/rf_hier.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/rf_hier.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module rf_hier
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/btr.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/btr.v
+Top level modules:
+	rf_hier
+
+} {} {}} D:/cs552/projectDemo1/verilog/btr.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/btr.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module btr
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/wb.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/wb.v
+Top level modules:
+	btr
+
+} {} {}} D:/cs552/projectDemo1/verilog/nor2.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/nor2.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module nor2
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/nor2.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/nor2.v
+Top level modules:
+	nor2
+
+} {} {}} D:/cs552/projectDemo1/verilog/wb.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/wb.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module wb
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/fetch.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/fetch.v
+Top level modules:
+	wb
+
+} {} {}} D:/cs552/projectDemo1/verilog/nor3.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/nor3.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module nor3
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/not1.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/not1.v
+Top level modules:
+	nor3
+
+} {} {}} D:/cs552/projectDemo1/verilog/not1.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/not1.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module not1
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/nor3.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/nor3.v
+Top level modules:
+	not1
+
+} {} {}} D:/cs552/projectDemo1/verilog/alu_i1.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/alu_i1.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module alu_i1
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/alu_i1.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/alu_i1.v
+Top level modules:
+	alu_i1
+
+} {} {}} D:/cs552/projectDemo1/verilog/execute.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/execute.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module execute
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/execute.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/execute.v
+Top level modules:
+	execute
+
+} {} {}} D:/cs552/projectDemo1/verilog/nand2.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/nand2.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module nand2
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/proc_hier.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/proc_hier.v
+Top level modules:
+	nand2
+
+} {} {}} D:/cs552/projectDemo1/verilog/proc_hier.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/proc_hier.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module proc_hier
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/nand2.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/nand2.v
+Top level modules:
+	proc_hier
+
+} {} {}} D:/cs552/projectDemo1/verilog/alu_i2.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/alu_i2.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module alu_i2
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/alu_i2.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/alu_i2.v
+Top level modules:
+	alu_i2
+
+} {} {}} D:/cs552/projectDemo1/verilog/nand3.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/nand3.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module nand3
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/nand3.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/nand3.v
+Top level modules:
+	nand3
+
+} {} {}} D:/cs552/projectDemo1/verilog/shifter.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/shifter.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module shifter
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/shifter.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/shifter.v
+Top level modules:
+	shifter
+
+} {} {}} D:/cs552/projectDemo1/verilog/fullAdder1b.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/fullAdder1b.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module fullAdder1b
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/fullAdder1b.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/fullAdder1b.v
+Top level modules:
+	fullAdder1b
+
+} {} {}} D:/cs552/projectDemo1/verilog/tb_fetch.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/tb_fetch.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module tb_fetch
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/tb_fetch.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/tb_fetch.v
+Top level modules:
+	tb_fetch
+
+} {} {}} D:/cs552/projectDemo1/verilog/dff.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/dff.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module dff
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/rf.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/rf.v
+Top level modules:
+	dff
+
+} {} {}} D:/cs552/projectDemo1/verilog/rf.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/rf.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module rf
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/dff.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/dff.v
+Top level modules:
+	rf
+
+} {} {}} D:/cs552/projectDemo1/verilog/control.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/control.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module control
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/control.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/control.v
+Top level modules:
+	control
+
+} {} {}} D:/cs552/projectDemo1/verilog/cla16b.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/cla16b.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module cla16b
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/tb_decode.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/tb_decode.v
+Top level modules:
+	cla16b
+
+} {} {}} D:/cs552/projectDemo1/verilog/memory.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/memory.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module memory
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/rf_bypass.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/rf_bypass.v
+Top level modules:
+	memory
+
+} {} {}} D:/cs552/projectDemo1/verilog/rf_bypass.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/rf_bypass.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module rf_bypass
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/memory.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/memory.v
+Top level modules:
+	rf_bypass
+
+} {} {}} D:/cs552/projectDemo1/verilog/tb_decode.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/tb_decode.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module tb_decode
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/cla16b.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/cla16b.v
+Top level modules:
+	tb_decode
+
+} {} {}} D:/cs552/projectDemo1/verilog/alu.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/alu.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module alu
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/alu.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/alu.v
+Top level modules:
+	alu
+
+} {} {}} D:/cs552/projectDemo1/verilog/proc_hier_bench.v {1 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/proc_hier_bench.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+-- Compiling module proc_hier_bench
 
-} {3.0 4.0} {}} D:/cs552/projectDemo1/verilog/proc_hier_bench.v {0 {vlog -work work -stats=none D:/cs552/projectDemo1/verilog/proc_hier_bench.v
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
-** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+Top level modules:
+	proc_hier_bench
 
-} {3.0 4.0} {}}
+} {} {}}

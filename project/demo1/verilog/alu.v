@@ -48,11 +48,15 @@ module alu(Rs, Rt, instr, op, Rd, err);
 	wire [15:0] ofSum;					// Rt + Rs
 	wire tempCout, tempCout1;				// store the carry out bit for Rt+Rs
 	wire [15:0] seqRd, sltRd, sleRd, scoRd, compareRd;	// temp for Rd
+	wire signCompare;
+	assign signCompare = (Rs[15] & ~Rt[15]) ? 1'b1 : 1'b0; 
 	cla16b adder2(.sum(subResult), .cOut(tempCout1), .inA(~Rs), .inB(Rt), .cIn(1'b1));
-	cla16b adder3(.sum(ofSum), .cOut(tempCout), .inA(Rs), .inB(Rt), .cIn(1'b0));	
+	cla16b adder3(.sum(ofSum), .cOut(tempCout), .inA(Rs), .inB(Rt), .cIn(1'b0));
 	assign seqRd = (Rs == Rt) ? 16'b1 : 16'b0;
-	assign sltRd = (Rs == Rt) ? 16'b0 : ((~subResult[15]) ? 16'b1 : 16'b0);
-	assign sleRd = (Rs == Rt) ? 16'b1 : ((~subResult[15]) ? 16'b1 : 16'b0);
+	// assign sltRd = (Rs == Rt) ? 16'b0 : {15'b0, ~subResult[15]};
+	// assign sleRd = {15'b0, ~subResult[15]};
+	assign sltRd = (Rs == Rt) ? 16'b0 : ((Rs[15] == Rt[15]) ? {15'b0, ~subResult[15]} : {15'b0, signCompare});
+	assign sleRd = sltRd | seqRd;
 	assign scoRd = (tempCout) ? 16'b1 : 16'b0;
 	assign compareRd = (instr[1]) ? ((instr[0]) ? scoRd : sleRd) 
 				: ((instr[0]) ? sltRd : seqRd); 

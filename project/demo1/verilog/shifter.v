@@ -54,7 +54,7 @@ module shifter(InBS, ShAmt, ShiftOper, OutBS);
 	assign rShftTemp3 = (ShAmt[2]) ? {leftFill3, rShftTemp2[15:4]} : rShftTemp2;
 	// Shift by 8
 	wire[7:0] leftFill4 = (ShiftOper[1]) ? rShftTemp3[7:0] : 8'b0;
-	assign rShftTemp4 = (ShAmt[3]) ? {leftFill3, rShftTemp3[15:8]} : rShftTemp3;
+	assign rShftTemp4 = (ShAmt[3]) ? {leftFill4, rShftTemp3[15:8]} : rShftTemp3;
 
 	// if ShiftOper[0] is 0, we use left barrel shifter
 	// if ShiftOper[0] is 1, we use right barrel shifter

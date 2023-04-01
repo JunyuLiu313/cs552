@@ -39,7 +39,8 @@ assign RegWrite =   (&INSTR[15:13])                             |
                     (&(INSTR[15:14]) & ~INSTR[13])              |    
                     (~INSTR[15] & INSTR[14] & ~INSTR[13])       |
                     (INSTR[15] & ~INSTR[14] & INSTR[13])        |
-                    (INSTR[15] & !(|INSTR[14:13]))              |
+                    (INSTR[15] & !(|INSTR[14:12]) & INSTR[11])  |
+                    (INSTR[15] & !(|INSTR[14:13]) & INSTR[12])  |
                     (!(|INSTR[15:14]) & (&INSTR[13:12]));
 
 //  for RTI instruction PC<-EPC
@@ -49,10 +50,9 @@ assign FUNC 	= INSTR[1:0];
 assign OPCODE   = INSTR[15:11];
 
 wire RsRdOp, R7RdOp;
-assign RsRdOp   = 	(INSTR[15] & ~INSTR[14] & ~INSTR[13] & INSTR[12] & ~INSTR[11]) 	|
-			(INSTR[15] & INSTR[14] 	& !(|INSTR[13:11]))			|
-			(INSTR[15] & ~INSTR[14] & ~INSTR[13] & INSTR[12] & INSTR[11]) 	;
-assign R7RdOp   = !(|INSTR[15:14]) & ( &INSTR[13:12] | (~INSTR[13])&INSTR[12]&~INSTR[11]);
+assign RsRdOp   = 	(INSTR[15] & INSTR[14] 	& !(|INSTR[13:11]))			|
+			        (INSTR[15] & ~INSTR[14] & ~INSTR[13] & INSTR[12])   ;
+assign R7RdOp   =   !(|INSTR[15:14]) & ( &INSTR[13:12] | (~INSTR[13])&INSTR[12]&~INSTR[11]);
 wire [2:0] Rd_i1, Rd_i2;
 //  might be error with selection logic when there are PC values is invalid
 assign Rd_i1    = (&INSTR[15:14]) & (|INSTR[13:11]) ? INSTR[4:2] : INSTR[7:5]; 

@@ -94,7 +94,7 @@ module proc_hier_bench();
             $fclose(trace_file);
             $fclose(sim_log_file);
             
-            $stop;
+            $finish;
          end else begin // if (RegWrite)
             if (MemWrite) begin
                // st

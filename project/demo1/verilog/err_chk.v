@@ -32,6 +32,8 @@ module err_chk  (//Inputs
         4'b1111: err1 = 1'b0;
         default: err1 = 1'b1;
         endcase
+    end
+    always@* begin
         case(writeInData[7:4]) 
         4'b0000: err2 = 1'b0;
         4'b0001: err2 = 1'b0;
@@ -50,7 +52,9 @@ module err_chk  (//Inputs
         4'b1110: err2 = 1'b0;
         4'b1111: err2 = 1'b0;
         default: err2 = 1'b1;
-        endcase        
+        endcase  
+    end
+    always@* begin      
         case(writeInData[11:8]) 
         4'b0000: err3 = 1'b0;
         4'b0001: err3 = 1'b0;
@@ -70,6 +74,8 @@ module err_chk  (//Inputs
         4'b1111: err3 = 1'b0;
         default: err3 = 1'b1;
         endcase
+    end
+    always@* begin
         case(writeInData[15:12]) 
         4'b0000: err4 = 1'b0;
         4'b0001: err4 = 1'b0;
@@ -89,16 +95,22 @@ module err_chk  (//Inputs
         4'b1111: err4 = 1'b0;
         default: err4 = 1'b1;
         endcase
+    end
+    always@* begin
         case(writeEn)
         1'b0:    err5 = 1'b0;
         1'b1:    err5 = 1'b0;
         default: err5 = 1'b1;
         endcase
+    end
+    always@* begin
         case(rst)
         1'b0:    err6 = 1'b0;
         1'b1:    err6 = 1'b0;
         default: err6 = 1'b1;
         endcase
+    end
+    always@* begin
         case(clk)
         1'b0:    err7 = 1'b0;
         1'b1:    err7 = 1'b0;
