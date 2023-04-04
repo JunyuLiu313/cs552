@@ -6,12 +6,12 @@
 */
 `default_nettype none
 module mem_wb(
-	clk, rst, nop, MemtoReg_m, exResult_e, memResult_m,
+	clk, rst, nop, MemtoReg_m, exResult_m, memResult_m,
 	MemtoReg_w, exResult_w, memResult_w
 );
 	input wire clk, rst, nop;
 	input wire MemtoReg_m;
-	input wire [15:0] exResult_e, memResult_m;
+	input wire [15:0] exResult_m, memResult_m;
 	
 	output wire MemtoReg_w;
 	output wire [15:0] exResult_w, memResult_w;
@@ -19,9 +19,9 @@ module mem_wb(
 	wire MemtoReg;
 	wire [15:0] exResult, memResult;
 
-	assign MemtoReg = nop ? MemtoReg_m : MemtoReg_w;
-	assign exResult = nop ? exResult_e : exResult_w;
-	assign memResult = nop ? memResult_m : memResult_w;
+	assign MemtoReg = nop ? MemtoReg_w : MemtoReg_m;
+	assign exResult = nop ? exResult_w : exResult_m;
+	assign memResult = nop ? memResult_w : memResult_m;
 
 	dff iDFF0 (.q(MemtoReg_w), .d(MemtoReg), .clk(clk), .rst(rst));
 	dff iDFF1 [15:0] (.q(exResult_w), .d(exResult), .clk(clk), .rst(rst));
