@@ -1,7 +1,7 @@
 `default_nettype none
 module if_id( instr_f, pc_f, clk, rst, instr_d, pc_d, nop);
 input wire [15:0] instr_f, pc_f;
-input clk, rst, nop;
+input wire clk, rst, nop;
 output wire [15:0] instr_d, pc_d;
 
 wire [15:0] instr, pc;
