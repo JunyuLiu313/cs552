@@ -1,0 +1,15 @@
+Reading line: // Original test: ./shojaei/hw4/problem6/xori_2.asm
+Reading line: // Author: shojaei
+Reading line: // Test source code follows
+Reading line: 
+Reading line: 
+Reading line: lbi r1, 24
+Reading line: xori r2, r1, 7
+Reading line: halt
+@0
+c1
+18
+51
+47
+00
+00

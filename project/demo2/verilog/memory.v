@@ -6,9 +6,15 @@
                      processor.
 */
 `default_nettype none
-module memory (/* TODO: Add appropriate inputs/outputs for your memory stage here*/);
+module memory (Addr, WriteData, halt, MemWrite, MemRead, ReadData, clk, rst);
 
-   // TODO: Your code here
+input wire [15:0] Addr, WriteData;
+input wire halt, MemWrite, MemRead, clk, rst;
+
+output wire [15:0] ReadData;
+
+memory2c D_MEM (.data_out(ReadData), .data_in(WriteData), .addr(Addr),
+          .enable(MemRead|MemWrite), .wr(MemWrite), .createdump(halt), .clk(clk), .rst(rst));
    
 endmodule
 `default_nettype wire
