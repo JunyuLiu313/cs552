@@ -9,7 +9,7 @@ module execute (
 	// inputs
 	clk, rst, opcode, Rs, Rt, Imm, currPC, FUNC, halt, nop, MemRead, MemWrite, MemtoReg, branch, resultSel,
 	// outputs
-	writeData, nxtPC, MemAddr, ex_err
+	writeData, nxtPC, MemAddr, ex_err, branchTaken
 );
 
    // TODO: Your code here
@@ -20,6 +20,8 @@ module execute (
 	
 	output wire [15:0] writeData, nxtPC, MemAddr;
 	output wire ex_err;
+
+	output wire branchTaken;
 	
 	// temps for all the writeData from the ALUs
 	wire [15:0] r_wData, j_wData, i1_wData, i2_wData;
@@ -50,6 +52,7 @@ module execute (
 	cla16b adder1(.sum(normalPC), .cOut(), .inA(currPC), .inB(16'h2), .cIn(1'b0));
 	// assign nxtPC = (resultSel[1]) ? ((resultSel[0]) ? j_PC : i2_PC) : normalPC;
 	// assign nxtPC = (~opcode[4] & opcode[2]) ? ((opcode[3]) ? i2_PC : j_PC) : normalPC;
+	assign branchTaken = (resultSel == 2'b11) ? 1'b1 : ((resultSel == 2'b10) ? ((~opcode[4]) ? 1'b1 : 1'b0) : 1'b0);
 	assign nxtPC = (resultSel == 2'b11) ? j_PC : ((resultSel == 2'b10) ? ((~opcode[4]) ? i2_PC : normalPC) : normalPC);
 	
 	// chooose the error signal

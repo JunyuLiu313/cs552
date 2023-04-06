@@ -15,7 +15,6 @@ module proc (/*AUTOARG*/
    output reg err;
    wire stall, nop, halt;
    assign stall = 1'b0;
-   wire [2:0] Rd_d, Rd_x, Rd_m, Rd_w;
    wire [15:0] PC, pc_f, pc_d, pc_x, nxtPC_x;
    wire [15:0] instr_f, instr_d;
    wire [15:0] WBdata;
@@ -24,6 +23,7 @@ module proc (/*AUTOARG*/
    wire [1:0] func_d, func_x, resultSel_d, resultSel_x;
    wire halt_d, MemRead_d, MemWrite_d, MemToReg_d, branch_d, savePC_d;
    wire halt_x, MemRead_x, MemWrite_x, MemToReg_x, branch_x, savePC_x;
+   wire branchTaken_x;
    wire halt_m, MemWrite_m, MemRead_m, MemToReg_m;
    wire nop_wb, MemToReg_wb;
    wire [15:0] writeData_x, writeData_m, writeData_wb;
@@ -36,12 +36,12 @@ module proc (/*AUTOARG*/
    
    if_id ifid0    (  .instr_f(instr_f), .pc_f(pc_f), .clk(clk), .rst(rst), .instr_d(instr_d), .pc_d(pc_d), .stall(stall), .halt(halt), .nop(nop));
 
-   decode d0      (  .INSTR(instr_d), .clk(clk), .rst(rst), .WBdata(WBdata), .Rd_d(Rd_d), .Rd_w(Rd_w),
+   decode d0      (  .INSTR(instr_d), .clk(clk), .rst(rst), .WBdata(WBdata), 
                      .RsData(Rs_d), .RtData(Rt_d), .Imm(Imm_d), .OPCODE(opcode_d), .FUNC(func_d),
                      .halt(halt_d), .nop(nop), .MemRead(MemRead_d), .MemWrite(MemWrite_d), .MemToReg(MemToReg_d), .branch(branch_d),
                      .savePC(savePC_d), .D_err(D_err), .resultSel(resultSel_d));
 
-   id_ex idex0    (  .clk(clk), .rst(rst), .stall(stall), .nop(nop), .Rd_d(Rd_d), .Rd_x(Rd_x),
+   id_ex idex0    (  .clk(clk), .rst(rst), .stall(stall), .nop(nop),
                      .RsData_d(Rs_d), .RtData_d(Rt_d), .Imm_d(Imm_d), .opcode_d(opcode_d), .func_d(func_d), .currPC_d(pc_d),
                      .RsData_x(Rs_x), .RtData_x(Rt_x), .Imm_x(Imm_x), .opcode_x(opcode_x), .func_x(func_x), .currPC_x(pc_x),
                      .halt_d(halt_d), .MemRead_d(MemRead_d), .MemWrite_d(MemWrite_d), .MemToReg_d(MemToReg_d), .branch_d(branch_d), .savePC_d(savePC_d), .resultSel_d(resultSel_d),
@@ -51,16 +51,17 @@ module proc (/*AUTOARG*/
                      .opcode(opcode_x), .Rs(Rs_x), .Rt(Rt_x), .Imm(Imm_x), .currPC(pc_x), .FUNC(func_x), 
                      .halt(halt_x), .nop(nop), 
                      .MemRead(MemRead_x), .MemWrite(MemWrite_x), .MemtoReg(MemToReg_x), .branch(branch_x), .resultSel(resultSel_d),
-	                  .writeData(writeData_x), .nxtPC(PC), .MemAddr(memAddr_x), .ex_err(ex_err));
+	                  .writeData(writeData_x), .nxtPC(nxtPC_x), .MemAddr(memAddr_x), .ex_err(ex_err), .branchTaken(branchTaken_x));
 
-   ex_mem iexmem0 (  .clk(clk), .rst(rst), .stall(stall), .nop(nop), .Rd_x(Rd_x), .Rd_m(Rd_m),
-                     .Addr_x(memAddr_x), .writeData_x(writeData_x), .halt_x(halt_x), .MemWrite_x(MemWrite_x), .MemRead_x(MemRead_x), .Rt_x(Rt_x), .MemToReg_x(MemToReg_x),
-                     .Addr_m(memAddr_m), .WriteData_m(writeData_m), .halt_m(halt_m), .MemWrite_m(MemWrite_m), .MemRead_m(MemRead_m), .Rt_m(Rt_m), .MemToReg_m(MemToReg_m));
+   ex_mem iexmem0 (  .clk(clk), .rst(rst), .stall(stall), .nop(nop),
+                     .Addr_x(memAddr_x), .writeData_x(writeData_x), .halt_x(halt), .MemWrite_x(MemWrite_x), .MemRead_x(MemRead_x), .Rt_x(Rt_x), .MemToReg_x(MemToReg_x),
+                     .Addr_m(memAddr_m), .WriteData_m(writeData_m), .halt_m(halt_m), .MemWrite_m(MemWrite_m), .MemRead_m(MemRead_m), .Rt_m(Rt_m), .MemToReg_m(MemToReg_m),
+                     .nxtPC_x(nxtPC_x), .nxtPC_m(PC));
 
    memory imem0   (  .clk(clk), .rst(rst), .halt(halt_m),
                      .Addr(memAddr_m), .WriteData(Rt_m), .MemWrite(MemWrite_m), .MemRead(MemRead_m), .ReadData(memResult_m));
 
-   mem_wb imemwb0 (  .clk(clk), .rst(rst), .stall(stall), .nop(nop), .halt_m(halt_m), .Rd_m(Rd_m), .Rd_w(Rd_w),
+   mem_wb imemwb0 (  .clk(clk), .rst(rst), .stall(stall), .nop(nop), .halt_m(halt_m),
                      .MemtoReg_m(MemToReg_m), .exResult_m(writeData_m), .memResult_m(memResult_m),
 	                  .MemtoReg_w(MemToReg_wb), .exResult_w(writeData_wb), .memResult_w(memResult_wb), .halt_w(halt_wb));
 
