@@ -16,7 +16,8 @@ module proc (/*AUTOARG*/
    input wire rst;
 
    output reg err;
-   wire stall, nop;
+   wire stall, nop, halt;
+   assign stall = 1'b0;
    wire [15:0] PC, pc_f, pc_d, pc_x, nxtPC_x;
    wire [15:0] instr_f, instr_d;
    wire [15:0] WBdata;
@@ -34,7 +35,7 @@ module proc (/*AUTOARG*/
    /* your code here -- should include instantiations of fetch, decode, execute, mem and wb modules */
    fetch f0       (  .PC(PC), .INSTR(instr_f), .clk(clk), .rst(rst), .currPC(pc_f));
    
-   if_id ifid0    (  .instr_f(instr_f), .pc_f(pc_f), .clk(clk), .rst(rst), .instr_d(instr_d), .pc_d(pc_d), .stall(stall));
+   if_id ifid0    (  .instr_f(instr_f), .pc_f(pc_f), .clk(clk), .rst(rst), .instr_d(instr_d), .pc_d(pc_d), .stall(stall), .halt(halt));
 
    decode d0      (  .INSTR(instr_d), .clk(clk), .rst(rst), .WBdata(WBdata), 
                      .RsData(Rs_d), .RtData(Rt_d), .Imm(Imm_d), .OPCODE(opcode_d), .FUNC(func_d),
@@ -54,7 +55,7 @@ module proc (/*AUTOARG*/
 	                  .writeData(writeData_x), .nxtPC(PC), .MemAddr(memAddr_x), .ex_err(ex_err));
 
    ex_mem iexmem0 (  .clk(clk), .rst(rst), .stall(stall), 
-                     .Addr_x(memAddr_x), .writeData_x(writeData_x), .halt_x(halt_x), .MemWrite_x(MemWrite_x), .MemRead_x(MemRead_x), .Rt_x(Rt_x), .MemToReg_x(MemToReg_x),
+                     .Addr_x(memAddr_x), .writeData_x(writeData_x), .halt_x(halt), .MemWrite_x(MemWrite_x), .MemRead_x(MemRead_x), .Rt_x(Rt_x), .MemToReg_x(MemToReg_x),
                      .Addr_m(memAddr_m), .WriteData_m(writeData_m), .halt_m(halt_m), .MemWrite_m(MemWrite_m), .MemRead_m(MemRead_m), .Rt_m(Rt_m), .MemToReg_m(MemToReg_m));
 
    memory imem0   (  .clk(clk), .rst(rst), .halt(halt_m),
