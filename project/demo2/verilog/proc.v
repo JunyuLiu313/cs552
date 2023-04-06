@@ -1,6 +1,3 @@
-
- 
-
 /* $Author: sinclair $ */
 /* $LastChangedDate: 2020-02-09 17:03:45 -0600 (Sun, 09 Feb 2020) $ */
 /* $Rev: 46 $ */
@@ -31,6 +28,7 @@ module proc (/*AUTOARG*/
    wire [15:0] writeData_x, writeData_m, writeData_wb;
    wire [15:0] memAddr_x, memAddr_m;
    wire [15:0] memResult_m, memResult_wb;
+   wire halt_wb;
    wire ex_err, D_err;   
    /* your code here -- should include instantiations of fetch, decode, execute, mem and wb modules */
    fetch f0       (  .PC(PC), .INSTR(instr_f), .clk(clk), .rst(rst), .currPC(pc_f));
@@ -61,9 +59,9 @@ module proc (/*AUTOARG*/
    memory imem0   (  .clk(clk), .rst(rst), .halt(halt_m),
                      .Addr(memAddr_m), .WriteData(Rt_m), .MemWrite(MemWrite_m), .MemRead(MemRead_m), .ReadData(memResult_m));
 
-   mem_wb imemwb0 (  .clk(clk), .rst(rst), .stall(stall), .nop(nop),
+   mem_wb imemwb0 (  .clk(clk), .rst(rst), .stall(stall), .nop(nop), .halt_m(halt_m),
                      .MemtoReg_m(MemToReg_m), .exResult_m(writeData_m), .memResult_m(memResult_m),
-	                  .MemtoReg_w(MemToReg_wb), .exResult_w(writeData_wb), .memResult_w(memResult_wb));
+	                  .MemtoReg_w(MemToReg_wb), .exResult_w(writeData_wb), .memResult_w(memResult_wb), .halt_w(halt_wb));
 
    wb iwb0        (  .clk(clk), .rst(rst), 
                      .MemtoReg(MemToReg_wb), .exResult(writeData_wb), .memResult(memResult_wb), 
