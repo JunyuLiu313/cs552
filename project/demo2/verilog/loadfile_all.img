@@ -1,15 +1,310 @@
-Reading line: // Original test: ./shojaei/hw4/problem6/xori_2.asm
-Reading line: // Author: shojaei
-Reading line: // Test source code follows
-Reading line: 
-Reading line: 
-Reading line: lbi r1, 24
-Reading line: xori r2, r1, 7
+Reading line: lbi r0, 0x1
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: lbi r1, 0x2
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: add r2, r1, r0
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: sub r2, r1, r0
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: xor r2, r1, r0
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: andn r2, r1, r0
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: rol r2, r1, r0
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: sll r2, r1, r0
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: ror r2, r1, r0
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: srl r2, r1, r0
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: seq r2, r1, r0
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: slt r2, r1, r0
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: sle r2, r1, r0
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: sco r2, r1, r0
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: btr r2, r1
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
+Reading line: nop
 Reading line: halt
 @0
+c0
+01
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
 c1
-18
-51
-47
+02
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+d9
+08
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+d9
+09
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+d9
+0a
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+d9
+0b
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+d1
+0a
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+d1
+08
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+d1
+0b
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+d1
+09
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+e1
+08
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+e9
+08
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+f1
+08
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+f9
+08
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+c9
+08
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
+08
+00
 00
 00

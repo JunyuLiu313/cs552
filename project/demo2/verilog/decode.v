@@ -26,10 +26,6 @@ wire ZeroExt1, ZeroExt2, RTI, SIIC, RegWrite, jump, JR;
 wire [2:0] Rd, Rt, Rs;
 wire r, if1, if2, j;
 wire [1:0] resultSel_i1, resultSel_i2;
-// wire [15:0] WBdataReg;
-// dff wbReg[15:0] (.q(WBdataReg), .d(WBdata), .clk(clk), .rst(rst));
-// wire [15:0] RsDataReg;
-// dff WBREG [15:0] (.q(RsData), .d(RsDataReg), .clk(clk), .rst(rst));
 
 control CS( //  input
             .INSTR(INSTR),
@@ -39,7 +35,7 @@ control CS( //  input
             .savePC(savePC), .RTI(RTI), .SIIC(SIIC), .OPCODE(OPCODE),
             .FUNC(FUNC), .Rs(Rs), .Rd(Rd), .Rt(Rt), .ZeroExt1(ZeroExt1), .ZeroExt2(ZeroExt2), .branch(branch));
 
-rf       regFile0(//  inputs
+rf_bypass   regFile0(//  inputs
             .clk(clk), .rst(rst), .read1RegSel(Rs), .read2RegSel(Rt),
              .writeRegSel(Rd), .writeInData(WBdata), .writeEn(RegWrite),
             //  outputs

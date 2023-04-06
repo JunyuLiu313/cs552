@@ -11,9 +11,6 @@ module proc_hier();
    wire                 err;                    // From p0 of proc.v
    wire                 rst;                    // From c0 of clkrst.v
    // End of automatics
-
-        wire [15:0] PC_Out, Instruction_f;
-
    clkrst c0(/*AUTOINST*/
              // Outputs
              .clk                       (clk),

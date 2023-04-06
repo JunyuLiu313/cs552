@@ -1,3 +1,6 @@
+
+ 
+
 /* $Author: sinclair $ */
 /* $LastChangedDate: 2020-02-09 17:03:45 -0600 (Sun, 09 Feb 2020) $ */
 /* $Rev: 46 $ */
@@ -51,7 +54,7 @@ module proc (/*AUTOARG*/
 
    ex_mem iexmem0 (  .clk(clk), .rst(rst), .nop(nop_m), 
                      .Addr_x(memAddr_x), .writeData_x(writeData_x), .halt_x(halt_x), .MemWrite_x(MemWrite_x), .MemRead_x(MemRead_x), .Rt_x(Rt_x), .MemToReg_x(MemToReg_x),
-                     .Addr_m(memAddr_m), .WriteData_m(writeData_m), .halt_m(halt_m), .MemWrite_m(MemWrite_m), .MemRead_m(MemRead_m), .Rt_m(Rt_m));
+                     .Addr_m(memAddr_m), .WriteData_m(writeData_m), .halt_m(halt_m), .MemWrite_m(MemWrite_m), .MemRead_m(MemRead_m), .Rt_m(Rt_m), .MemToReg_m(MemToReg_m));
 
    memory imem0   (  .clk(clk), .rst(rst), .halt(halt_m),
                      .Addr(memAddr_m), .WriteData(Rt_m), .MemWrite(MemWrite_m), .MemRead(MemRead_m), .ReadData(memResult_m));
@@ -60,7 +63,7 @@ module proc (/*AUTOARG*/
                      .MemtoReg_m(MemToReg_m), .exResult_m(writeData_m), .memResult_m(memResult_m),
 	                  .MemtoReg_w(MemToReg_wb), .exResult_w(writeData_wb), .memResult_w(memResult_wb));
 
-   wb iwb0     (  .clk(clk), .rst(rst), 
+   wb iwb0        (  .clk(clk), .rst(rst), 
                      .MemtoReg(MemToReg_wb), .exResult(writeData_wb), .memResult(memResult_wb), 
                      .wbResult(WBdata));
 
