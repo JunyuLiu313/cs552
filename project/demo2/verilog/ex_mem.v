@@ -6,23 +6,26 @@
 */
 `default_nettype none
 module ex_mem(
-    clk, rst, stall, nop,
+    clk, rst, stall, nop, Rd_x, Rd_m,
     Addr_x, writeData_x, halt_x, MemWrite_x, MemRead_x, Rt_x, MemToReg_x,
     Addr_m, WriteData_m, halt_m, MemWrite_m, MemRead_m, Rt_m, MemToReg_m
 );
     input wire clk, rst, stall, nop;
+    input wire [2:0] Rd_x;
     input wire [15:0] Addr_x, writeData_x, Rt_x;
     input wire halt_x, MemWrite_x, MemRead_x,MemToReg_x;
 
+    output wire [2:0] Rd_m;
     output wire [15:0] Addr_m, WriteData_m, Rt_m;
     output wire halt_m, MemWrite_m, MemRead_m, MemToReg_m;
 
     wire [15:0] Addr, WriteData, rt;
     wire halt, MemWrite, MemRead, MemtoReg;
-
+    wire [2:0] Rd;
     assign Addr = (stall | nop) ? Addr_m : Addr_x;
     assign WriteData = (stall | nop) ? WriteData_m : writeData_x;
     assign rt = (stall | nop) ? Rt_m : Rt_x;
+    assign Rd = (stall | nop) ? Rd_m : Rd_x;    
     assign halt = (stall) ? halt_m : halt_x;
     assign MemWrite = (stall | nop) ? MemWrite_m : MemWrite_x;
     assign MemRead = (stall | nop) ? MemRead_m : MemRead_x;
@@ -35,6 +38,7 @@ module ex_mem(
 	dff iDFF4 (.q(MemWrite_m), .d(MemWrite), .clk(clk), .rst(rst)); 
 	dff iDFF5 (.q(MemRead_m), .d(MemRead), .clk(clk), .rst(rst)); 
     dff iDFF6 (.q(MemToReg_m), .d(MemtoReg), .clk(clk), .rst(rst)); 
+    dff iDFF7 [2:0] (.q(Rd_m), .d(Rd_x), .clk(clk), .rst(rst));
 
 endmodule
 `default_nettype wire

@@ -1,10 +1,12 @@
 `default_nettype none
-module id_ex(   clk, rst, stall, nop,  
+module id_ex(   clk, rst, stall, nop, Rd_d, Rd_x, 
                 RsData_d, RtData_d, Imm_d, opcode_d, func_d, currPC_d,
                 RsData_x, RtData_x, Imm_x, opcode_x, func_x, currPC_x,
                 halt_d, MemRead_d, MemWrite_d, MemToReg_d, branch_d, savePC_d, resultSel_d,
                 halt_x, MemRead_x, MemWrite_x, MemToReg_x, branch_x, savePC_x, resultSel_x);
-input wire clk, rst, stall, nop ;
+input wire [2:0] Rd_d;
+output wire [2:0] Rd_x;
+input wire clk, rst, stall, nop;
 input wire [15:0] RsData_d, RtData_d, Imm_d, currPC_d;
 output wire [15:0] RsData_x, RtData_x, Imm_x, currPC_x;
 input wire [4:0] opcode_d;
@@ -17,8 +19,10 @@ output wire halt_x, MemRead_x, MemWrite_x, MemToReg_x, branch_x, savePC_x;
 wire halt, MemRead, MemWrite, MemToReg, branch, savePC;
 wire [15:0] RsData, RtData, Imm, currPC;
 wire [4:0] opcode;
+wire [2:0] Rd;
 wire [1:0] func, resultSel;
 
+assign Rd = (stall | nop) ? Rd_x : Rd_d;
 assign RsData = (stall | nop) ? RsData_x : RsData_d;
 assign RtData = (stall | nop) ? RtData_x : RtData_d;
 assign Imm = (stall | nop) ? Imm_x : Imm_d;
@@ -35,6 +39,7 @@ assign MemToReg = (stall | nop) ? MemToReg_x : MemToReg_d;
 assign branch   = (stall | nop) ? branch_x : branch_d;
 assign savePC   = (stall | nop) ? savePC_x : savePC_d;  
 
+dff RdDX[2:0]   (.d(Rd_d), .q(Rd_x), .clk(clk), .rst(rst));
 dff RsDX[15:0]  (.d(RsData), .q(RsData_x), .clk(clk), .rst(rst));
 dff RtDX[15:0]  (.d(RtData), .q(RtData_x), .clk(clk), .rst(rst));
 dff ImmDX[15:0] (.d(Imm), .q(Imm_x), .clk(clk), .rst(rst));
