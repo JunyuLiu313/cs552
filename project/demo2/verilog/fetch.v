@@ -19,6 +19,6 @@ module fetch (PC, INSTR, clk, rst, currPC, branchTaken);
 
 	dff PCReg [15:0] (.q(currPC), .d(PC_i), .clk(clk), .rst(rst));
 	memory2c IMEM 	(.data_out(INSTR), .data_in(16'b0), .addr(currPC), .enable(1'b1), .wr(1'b0), .createdump(1'b0), .clk(clk), .rst(rst));
-
+	
 endmodule
 `default_nettype wire

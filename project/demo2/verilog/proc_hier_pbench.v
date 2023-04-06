@@ -128,13 +128,13 @@ module proc_hier_pbench();
    // Edit the example below. You must change the signal
    // names on the right hand side
     
-   assign PC = DUT.p0.PC;
+   assign PC = DUT.p0.pc_f;
    assign Inst = DUT.p0.instr_f;
    
-   assign RegWrite = DUT.p0.d0.RegWrite;
+   assign RegWrite = DUT.p0.d0.RegWrite_wb;
    // Is register file being written to, one bit signal (1 means yes, 0 means no)
    //    
-   assign WriteRegister = DUT.p0.d0.Rd_w;
+   assign WriteRegister = DUT.p0.d0.Rd_wb;
    // The name of the register being written to. (3 bit signal)
    
    assign WriteData = DUT.p0.WBdata;

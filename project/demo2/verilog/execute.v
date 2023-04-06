@@ -52,7 +52,8 @@ module execute (
 	cla16b adder1(.sum(normalPC), .cOut(), .inA(currPC), .inB(16'h2), .cIn(1'b0));
 	// assign nxtPC = (resultSel[1]) ? ((resultSel[0]) ? j_PC : i2_PC) : normalPC;
 	// assign nxtPC = (~opcode[4] & opcode[2]) ? ((opcode[3]) ? i2_PC : j_PC) : normalPC;
-	assign branchTaken = (resultSel == 2'b11) ? 1'b1 : ((resultSel == 2'b10) ? ((~opcode[4]) ? 1'b1 : 1'b0) : 1'b0);
+	// assign branchTaken = (resultSel == 2'b11) ? 1'b1 : ((resultSel == 2'b10) ? ((~opcode[4]) ? 1'b1 : 1'b0) : 1'b0);
+	assign branchTaken = (~opcode[4] & opcode[3] & opcode[2]) ? 1'b1 : ((~opcode[4] & ~opcode[3] & opcode[2]) ? 1'b1 :1'b0);
 	assign nxtPC = (resultSel == 2'b11) ? j_PC : ((resultSel == 2'b10) ? ((~opcode[4]) ? i2_PC : normalPC) : normalPC);
 	
 	// chooose the error signal
