@@ -6,11 +6,11 @@
 */
 `default_nettype none
 module ex_mem(
-    clk, rst, stall,
+    clk, rst, stall, nop,
     Addr_x, writeData_x, halt_x, MemWrite_x, MemRead_x, Rt_x, MemToReg_x,
     Addr_m, WriteData_m, halt_m, MemWrite_m, MemRead_m, Rt_m, MemToReg_m
 );
-    input wire clk, rst, stall;
+    input wire clk, rst, stall, nop;
     input wire [15:0] Addr_x, writeData_x, Rt_x;
     input wire halt_x, MemWrite_x, MemRead_x,MemToReg_x;
 
@@ -20,13 +20,13 @@ module ex_mem(
     wire [15:0] Addr, WriteData, rt;
     wire halt, MemWrite, MemRead, MemtoReg;
 
-    assign Addr = stall ? Addr_m : Addr_x;
-    assign WriteData = stall ? WriteData_m : writeData_x;
-    assign rt = stall ? Rt_m : Rt_x;
-    assign halt = stall ? halt_m : halt_x;
-    assign MemWrite = stall ? MemWrite_m : MemWrite_x;
-    assign MemRead = stall ? MemRead_m : MemRead_x;
-    assign MemtoReg = stall ? MemToReg_m : MemToReg_x;
+    assign Addr = stall | nop ? Addr_m : Addr_x;
+    assign WriteData = stall | nop ? WriteData_m : writeData_x;
+    assign rt = stall | nop ? Rt_m : Rt_x;
+    assign halt = stall | nop ? halt_m : halt_x;
+    assign MemWrite = stall | nop ? MemWrite_m : MemWrite_x;
+    assign MemRead = stall | nop ? MemRead_m : MemRead_x;
+    assign MemtoReg = stall | nop ? MemToReg_m : MemToReg_x;
 
 	dff iDFF0 [15:0] (.q(Addr_m), .d(Addr), .clk(clk), .rst(rst)); 
 	dff iDFF1 [15:0] (.q(WriteData_m), .d(WriteData), .clk(clk), .rst(rst)); 
