@@ -27,12 +27,12 @@ module ex_mem(
 
     assign Addr = (stall) ? Addr_m : Addr_x;
     assign WriteData = (stall) ? WriteData_m : writeData_x;
-    assign Rd = (stall | nop_x) ? Rd_m : Rd_x;
+    assign Rd = (stall) ? Rd_m : Rd_x;
     assign RegWrite = (stall) ? RegWrite_m : RegWrite_x;    
     assign rt = (stall | nop_x) ? Rt_m : Rt_x;
     assign halt = (stall) ? halt_m : halt_x;
-    assign MemWrite = (stall | nop_x) ? MemWrite_m : MemWrite_x;
-    assign MemRead = (stall | nop_x) ? MemRead_m : MemRead_x;
+    assign MemWrite = (stall) ? MemWrite_m : MemWrite_x;
+    assign MemRead = (stall) ? MemRead_m : MemRead_x;
     assign MemtoReg = (stall | nop_x) ? MemToReg_m : MemToReg_x;
 
     assign nxtPC = (stall) ? nxtPC_m : nxtPC_x;

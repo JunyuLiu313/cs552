@@ -32,7 +32,7 @@ wire [1:0] func, resultSel;
 wire [2:0] Rd;
 
 assign RegWrite = (stall) ? RegWrite_x : RegWrite_d;
-assign Rd = (stall | nop_d) ? Rd_x : Rd_d;
+assign Rd = (stall) ? Rd_x : Rd_d;
 assign RsData = (stall | nop_d) ? RsData_x : RsData_d;
 assign RtData = (stall | nop_d) ? RtData_x : RtData_d;
 assign Imm = (stall | nop_d) ? Imm_x : Imm_d;
@@ -43,8 +43,8 @@ assign func = (stall | nop_d) ? func_x : func_d;
 assign resultSel = (stall | nop_d) ? resultSel_x : resultSel_d;
 
 assign halt = stall ? halt_x : halt_d;
-assign MemRead = (stall | nop_d) ? MemRead_x : MemRead_d;
-assign MemWrite = (stall | nop_d) ? MemWrite_x : MemWrite_d;
+assign MemRead = (stall) ? MemRead_x : MemRead_d;
+assign MemWrite = (stall) ? MemWrite_x : MemWrite_d;
 assign MemToReg = (stall | nop_d) ? MemToReg_x : MemToReg_d;
 assign branch   = (stall | nop_d) ? branch_x : branch_d;
 assign savePC   = (stall | nop_d) ? savePC_x : savePC_d;  
