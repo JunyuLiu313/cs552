@@ -3,7 +3,8 @@ module id_ex(   clk, rst, stall, nop_d, nop_x, Rd_d, Rd_x, RegWrite_d, RegWrite_
                 RsData_d, RtData_d, Imm_d, opcode_d, func_d, currPC_d,
                 RsData_x, RtData_x, Imm_x, opcode_x, func_x, currPC_x,
                 halt_d, MemRead_d, MemWrite_d, MemToReg_d, branch_d, savePC_d, resultSel_d,
-                halt_x, MemRead_x, MemWrite_x, MemToReg_x, branch_x, savePC_x, resultSel_x);
+                halt_x, MemRead_x, MemWrite_x, MemToReg_x, branch_x, savePC_x, resultSel_x
+                );
 input wire clk, rst, stall, nop_d;
 output wire nop_x;
 
@@ -24,6 +25,7 @@ output wire [1:0] func_x, resultSel_x;
 
 input wire halt_d, MemRead_d, MemWrite_d, MemToReg_d, branch_d, savePC_d;
 output wire halt_x, MemRead_x, MemWrite_x, MemToReg_x, branch_x, savePC_x;
+
 
 wire halt, MemRead, MemWrite, MemToReg, branch, savePC, RegWrite;
 wire [15:0] RsData, RtData, Imm, currPC;

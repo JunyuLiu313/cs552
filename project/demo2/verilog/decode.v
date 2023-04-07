@@ -6,7 +6,7 @@
 */
 `default_nettype none
 module decode(  //  inputs
-                INSTR, clk, rst, WBdata, Rd_wb, RegWrite_wb,
+                INSTR, clk, rst, WBdata, Rd_wb, RegWrite_wb, branchTaken_x,
                 //  outputs
                 RsData, RtData, Imm, OPCODE, FUNC, Rd_d,
                 //  control signals
@@ -16,6 +16,9 @@ module decode(  //  inputs
 input wire [15:0] INSTR, WBdata;
 input wire clk, rst, RegWrite_wb;
 input wire [2:0] Rd_wb;
+
+// flash signals
+input wire branchTaken_x;
 
 output wire [15:0] RsData, RtData, Imm;
 output wire [4:0] OPCODE;
@@ -29,8 +32,11 @@ wire [2:0] Rt, Rs;
 wire r, if1, if2, j;
 wire [1:0] resultSel_i1, resultSel_i2;
 
+wire [15:0] instr;
+assign instr = (branchTaken_x) ? 16'h0800 : INSTR;
+
 control CS( //  input
-            .INSTR(INSTR),
+            .INSTR(instr),
             //  outputs
             .halt(halt), .nop(nop), .MemRead(MemRead), .RegWrite(RegWrite_d), 
             .MemWrite(MemWrite), .MemToReg(MemToReg), .jump(jump), .JR(JR), .if1(if1), .if2(if2), .j(j), .r(r),

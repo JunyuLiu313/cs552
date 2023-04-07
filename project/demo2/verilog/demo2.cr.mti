@@ -5,6 +5,13 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	fetch
 
+} {} {}} D:/cs552/cs552/project/demo2/verilog/hazardControl.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/hazardControl.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module hazardControl
+
+Top level modules:
+	hazardControl
+
 } {} {}} D:/cs552/cs552/project/demo2/verilog/execute.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/execute.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module execute
@@ -47,6 +54,13 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	proc
 
+} {} {}} D:/cs552/cs552/project/demo2/verilog/decode.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/decode.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module decode
+
+Top level modules:
+	decode
+
 } {} {}} D:/cs552/cs552/project/demo2/verilog/nand3.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/nand3.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module nand3
@@ -61,13 +75,6 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	xor3
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/shifter.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/shifter.v
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module shifter
-
-Top level modules:
-	shifter
-
 } {} {}} D:/cs552/cs552/project/demo2/verilog/and2.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/and2.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module and2
@@ -75,19 +82,19 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	and2
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/and3.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/and3.v
+} {} {}} D:/cs552/cs552/project/demo2/verilog/shifter.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/shifter.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module and3
+-- Compiling module shifter
 
 Top level modules:
-	and3
+	shifter
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/fullAdder1b.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/fullAdder1b.v
+} {} {}} D:/cs552/cs552/project/demo2/verilog/memory2c.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/memory2c.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module fullAdder1b
+-- Compiling module memory2c
 
 Top level modules:
-	fullAdder1b
+	memory2c
 
 } {} {}} D:/cs552/cs552/project/demo2/verilog/memory2c.syn.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/memory2c.syn.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -96,12 +103,19 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	memory2c
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/memory2c.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/memory2c.v
+} {} {}} D:/cs552/cs552/project/demo2/verilog/fullAdder1b.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/fullAdder1b.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module memory2c
+-- Compiling module fullAdder1b
 
 Top level modules:
-	memory2c
+	fullAdder1b
+
+} {} {}} D:/cs552/cs552/project/demo2/verilog/and3.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/and3.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module and3
+
+Top level modules:
+	and3
 
 } {} {}} D:/cs552/cs552/project/demo2/verilog/mem_wb.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/mem_wb.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -117,33 +131,12 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	dff
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/id_ex.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/id_ex.v
+} {} {}} D:/cs552/cs552/project/demo2/verilog/wb.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/wb.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module id_ex
+-- Compiling module wb
 
 Top level modules:
-	id_ex
-
-} {} {}} D:/cs552/cs552/project/demo2/verilog/control.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/control.v
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module control
-
-Top level modules:
-	control
-
-} {} {}} D:/cs552/cs552/project/demo2/verilog/nor2.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/nor2.v
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module nor2
-
-Top level modules:
-	nor2
-
-} {} {}} D:/cs552/cs552/project/demo2/verilog/rf_bypass.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/rf_bypass.v
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module rf_bypass
-
-Top level modules:
-	rf_bypass
+	wb
 
 } {} {}} D:/cs552/cs552/project/demo2/verilog/tb_decode.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/tb_decode.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -152,33 +145,26 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	tb_decode
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/wb.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/wb.v
+} {} {}} D:/cs552/cs552/project/demo2/verilog/rf_bypass.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/rf_bypass.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module wb
+-- Compiling module rf_bypass
 
 Top level modules:
-	wb
+	rf_bypass
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/alu.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/alu.v
+} {} {}} D:/cs552/cs552/project/demo2/verilog/nor2.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/nor2.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module alu
+-- Compiling module nor2
 
 Top level modules:
-	alu
+	nor2
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/nor3.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/nor3.v
+} {} {}} D:/cs552/cs552/project/demo2/verilog/control.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/control.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module nor3
+-- Compiling module control
 
 Top level modules:
-	nor3
-
-} {} {}} D:/cs552/cs552/project/demo2/verilog/not1.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/not1.v
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module not1
-
-Top level modules:
-	not1
+	control
 
 } {} {}} D:/cs552/cs552/project/demo2/verilog/proc_hier_pbench.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/proc_hier_pbench.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -187,33 +173,26 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	proc_hier_pbench
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/ex_mem.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/ex_mem.v
+} {} {}} D:/cs552/cs552/project/demo2/verilog/not1.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/not1.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module ex_mem
+-- Compiling module not1
 
 Top level modules:
-	ex_mem
+	not1
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/alu_i1.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/alu_i1.v
+} {} {}} D:/cs552/cs552/project/demo2/verilog/nor3.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/nor3.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module alu_i1
+-- Compiling module nor3
 
 Top level modules:
-	alu_i1
+	nor3
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/alu_j.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/alu_j.v
+} {} {}} D:/cs552/cs552/project/demo2/verilog/alu.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/alu.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module alu_j
+-- Compiling module alu
 
 Top level modules:
-	alu_j
-
-} {} {}} D:/cs552/cs552/project/demo2/verilog/or2.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/or2.v
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module or2
-
-Top level modules:
-	or2
+	alu
 
 } {} {}} D:/cs552/cs552/project/demo2/verilog/if_id.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/if_id.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -222,19 +201,33 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	if_id
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/alu_i2.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/alu_i2.v
+} {} {}} D:/cs552/cs552/project/demo2/verilog/or2.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/or2.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module alu_i2
+-- Compiling module or2
 
 Top level modules:
-	alu_i2
+	or2
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/chErr.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/chErr.v
+} {} {}} D:/cs552/cs552/project/demo2/verilog/alu_j.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/alu_j.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module chErr
+-- Compiling module alu_j
 
 Top level modules:
-	chErr
+	alu_j
+
+} {} {}} D:/cs552/cs552/project/demo2/verilog/alu_i1.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/alu_i1.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module alu_i1
+
+Top level modules:
+	alu_i1
+
+} {} {}} D:/cs552/cs552/project/demo2/verilog/ex_mem.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/ex_mem.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module ex_mem
+
+Top level modules:
+	ex_mem
 
 } {} {}} D:/cs552/cs552/project/demo2/verilog/or3.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/or3.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -243,12 +236,19 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	or3
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/cla4b.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/cla4b.v
+} {} {}} D:/cs552/cs552/project/demo2/verilog/chErr.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/chErr.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module cla4b
+-- Compiling module chErr
 
 Top level modules:
-	cla4b
+	chErr
+
+} {} {}} D:/cs552/cs552/project/demo2/verilog/alu_i2.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/alu_i2.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module alu_i2
+
+Top level modules:
+	alu_i2
 
 } {} {}} D:/cs552/cs552/project/demo2/verilog/err_chk.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/err_chk.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -257,19 +257,19 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	err_chk
 
+} {} {}} D:/cs552/cs552/project/demo2/verilog/cla4b.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/cla4b.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module cla4b
+
+Top level modules:
+	cla4b
+
 } {} {}} D:/cs552/cs552/project/demo2/verilog/rf_hier.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/rf_hier.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module rf_hier
 
 Top level modules:
 	rf_hier
-
-} {} {}} D:/cs552/cs552/project/demo2/verilog/btr.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/btr.v
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module btr
-
-Top level modules:
-	btr
 
 } {} {}} D:/cs552/cs552/project/demo2/verilog/rf.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/rf.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -278,12 +278,12 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	rf
 
-} {} {}} D:/cs552/cs552/project/demo2/verilog/cla16b.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/cla16b.v
+} {} {}} D:/cs552/cs552/project/demo2/verilog/btr.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/btr.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module cla16b
+-- Compiling module btr
 
 Top level modules:
-	cla16b
+	btr
 
 } {} {}} D:/cs552/cs552/project/demo2/verilog/memory.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/memory.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -291,5 +291,12 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 
 Top level modules:
 	memory
+
+} {} {}} D:/cs552/cs552/project/demo2/verilog/cla16b.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/cla16b.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module cla16b
+
+Top level modules:
+	cla16b
 
 } {} {}}

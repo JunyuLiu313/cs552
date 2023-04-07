@@ -23,7 +23,7 @@ module mem_wb(
 	wire [2:0] Rd;
 	wire [15:0] exResult, memResult;
 
-	assign MemtoReg = (stall | nop_m) ? MemtoReg_w : MemtoReg_m;
+ 	assign MemtoReg = (stall | nop_m) ? MemtoReg_w : MemtoReg_m;
 	assign exResult = (stall)? exResult_w : exResult_m;
 	assign memResult = (stall | nop_m)? memResult_w : memResult_m;
 	assign Rd = (stall)? Rd_wb : Rd_m;

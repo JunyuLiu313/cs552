@@ -38,13 +38,15 @@ module proc (/*AUTOARG*/
    /* your code here -- should include instantiations of fetch, decode, execute, mem and wb modules */
    fetch f0       (  .PC(PC), .INSTR(instr_f), .clk(clk), .rst(rst), .currPC(pc_f), .branchTaken(branchTaken_m));
    
-   if_id ifid0    (  .instr_f(instr_f), .pc_f(pc_f), .clk(clk), .rst(rst), .instr_d(instr_d), .pc_d(pc_d), .stall(stall), .halt(halt), .nop(nop));
+   if_id ifid0    (  .instr_f(instr_f), .pc_f(pc_f), .clk(clk), .rst(rst), .instr_d(instr_d), .pc_d(pc_d), .stall(stall), .halt(halt), .nop(nop),
+                     .branchTaken_x(branchTaken_m));
 
    decode d0      (  .INSTR(instr_d), .clk(clk), .rst(rst), .WBdata(WBdata), .RegWrite_wb(RegWrite_wb), .Rd_wb(Rd_wb),
                      .RegWrite_d(RegWrite_d), .Rd_d(Rd_d),
                      .RsData(Rs_d), .RtData(Rt_d), .Imm(Imm_d), .OPCODE(opcode_d), .FUNC(func_d),
                      .halt(halt_d), .nop(nop_d), .MemRead(MemRead_d), .MemWrite(MemWrite_d), .MemToReg(MemToReg_d), .branch(branch_d),
-                     .savePC(savePC_d), .D_err(D_err), .resultSel(resultSel_d));
+                     .savePC(savePC_d), .D_err(D_err), .resultSel(resultSel_d),
+                     .branchTaken_x(branchTaken_m));
 
    id_ex idex0    (  .clk(clk), .rst(rst), .stall(stall), .nop_d(nop_d), .nop_x(nop_x), .Rd_d(Rd_d), .Rd_x(Rd_x), .RegWrite_d(RegWrite_d), .RegWrite_x(RegWrite_x),
                      .RsData_d(Rs_d), .RtData_d(Rt_d), .Imm_d(Imm_d), .opcode_d(opcode_d), .func_d(func_d), .currPC_d(pc_d),
