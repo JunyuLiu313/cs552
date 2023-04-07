@@ -56,3 +56,4 @@ assign Imm_i =  ((~INSTR[15]&INSTR[14]&~INSTR[13]) | (INSTR[15]&~INSTR[14]&INSTR
 assign Imm 	 =  (~INSTR[15]&~INSTR[14]&INSTR[13]&~INSTR[11]) ? {{5{INSTR[10]}}, INSTR[10:0]} : Imm_i;
 
 endmodule
+`default_nettype wire
