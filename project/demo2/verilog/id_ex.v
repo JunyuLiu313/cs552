@@ -35,21 +35,21 @@ wire [2:0] Rd;
 
 assign RegWrite = (stall) ? RegWrite_x : RegWrite_d;
 assign Rd = (stall) ? Rd_x : Rd_d;
-assign RsData = (stall | nop_d) ? RsData_x : RsData_d;
-assign RtData = (stall | nop_d) ? RtData_x : RtData_d;
-assign Imm = (stall | nop_d) ? Imm_x : Imm_d;
+assign RsData = (stall) ? RsData_x : RsData_d;
+assign RtData = (stall) ? RtData_x : RtData_d;
+assign Imm = (stall) ? Imm_x : Imm_d;
 assign currPC = (stall) ? currPC_x : currPC_d;
-assign opcode = (stall | nop_d) ? opcode_x : opcode_d;
+assign opcode = (stall) ? opcode_x : opcode_d;
 
-assign func = (stall | nop_d) ? func_x : func_d;
-assign resultSel = (stall | nop_d) ? resultSel_x : resultSel_d;
+assign func = (stall) ? func_x : func_d;
+assign resultSel = (stall) ? resultSel_x : resultSel_d;
 
 assign halt = stall ? halt_x : halt_d;
 assign MemRead = (stall) ? MemRead_x : MemRead_d;
 assign MemWrite = (stall) ? MemWrite_x : MemWrite_d;
-assign MemToReg = (stall | nop_d) ? MemToReg_x : MemToReg_d;
-assign branch   = (stall | nop_d) ? branch_x : branch_d;
-assign savePC   = (stall | nop_d) ? savePC_x : savePC_d;  
+assign MemToReg = (stall) ? MemToReg_x : MemToReg_d;
+assign branch   = (stall) ? branch_x : branch_d;
+assign savePC   = (stall) ? savePC_x : savePC_d;  
 
 
 dff RsDX[15:0]  (.d(RsData), .q(RsData_x), .clk(clk), .rst(rst));

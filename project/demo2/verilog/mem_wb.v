@@ -23,12 +23,12 @@ module mem_wb(
 	wire [2:0] Rd;
 	wire [15:0] exResult, memResult;
 
- 	assign MemtoReg = (stall | nop_m) ? MemtoReg_w : MemtoReg_m;
-	assign exResult = (stall)? exResult_w : exResult_m;
-	assign memResult = (stall | nop_m)? memResult_w : memResult_m;
-	assign Rd = (stall)? Rd_wb : Rd_m;
-	assign RegWrite = (stall)? RegWrite_wb : RegWrite_m;
-	assign halt = stall ? halt_w : halt_m;
+ 	assign MemtoReg = 	(stall) ? MemtoReg_w : MemtoReg_m;
+	assign exResult = 	(stall)? exResult_w : exResult_m;
+	assign memResult = 	(stall)? memResult_w : memResult_m;
+	assign Rd = 		(stall)? Rd_wb : Rd_m;
+	assign RegWrite = 	(stall)? RegWrite_wb : RegWrite_m;
+	assign halt = 		(stall) ? halt_w : halt_m;
 
 	dff iDFF0 (.q(MemtoReg_w), .d(MemtoReg), .clk(clk), .rst(rst));
 	dff iDFF1 [15:0] (.q(exResult_w), .d(exResult), .clk(clk), .rst(rst));
