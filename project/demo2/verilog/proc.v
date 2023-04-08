@@ -38,6 +38,9 @@ module proc (/*AUTOARG*/
    wire [2:0] Rd_d, Rd_x, Rd_m, Rd_wb;
    wire RegWrite_d, RegWrite_x, RegWrite_m, RegWrite_wb;
 
+   // signal for forwarding
+   wire [2:0] RtSel_d, RsSel_d;
+
 
    /* your code here -- should include instantiations of fetch, decode, execute, mem and wb modules */
    fetch f0       (  .PC(PC), .INSTR(instr_f), .clk(clk), .rst(rst), .currPC(pc_f), .branchTaken(branchTaken_m));
@@ -51,6 +54,8 @@ module proc (/*AUTOARG*/
                      .INSTR(instr_d), 
                      .RegWrite_d(RegWrite_d), .Rd_d(Rd_d),
                      .RsData(Rs_d), .RtData(Rt_d), .Imm(Imm_d), .OPCODE(opcode_d), .FUNC(func_d),
+                     // signals for forwarding
+                     .Rs(RsSel_d), .Rt(RtSel_d),
                      .halt(halt_d), .nop(nop_d), 
                      .MemRead(MemRead_d), .MemWrite(MemWrite_d), .MemToReg(MemToReg_d), .branch(branch_d),
                      .savePC(savePC_d), .D_err(D_err), .resultSel(resultSel_d),

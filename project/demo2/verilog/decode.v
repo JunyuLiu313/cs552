@@ -8,7 +8,7 @@
 module decode(  //  inputs
                 INSTR, clk, rst, WBdata, Rd_wb, RegWrite_wb, branchTaken_x,
                 //  outputs
-                RsData, RtData, Imm, OPCODE, FUNC, Rd_d,
+                RsData, RtData, Imm, OPCODE, FUNC, Rd_d, Rt, Rs,
                 //  control signals
                 halt, nop, MemRead, MemWrite, MemToReg, branch, savePC,
                 D_err, resultSel, RegWrite_d);
@@ -25,10 +25,12 @@ output wire [4:0] OPCODE;
 output wire [1:0] FUNC, resultSel;
 output wire D_err, RegWrite_d;
 output wire [2:0] Rd_d;
+output wire [2:0] Rt, Rs;
+
 //  Control signals
 output wire halt, nop, MemRead, MemWrite, MemToReg, branch, savePC;
 wire ZeroExt1, ZeroExt2, RTI, SIIC, jump, JR;
-wire [2:0] Rt, Rs;
+
 wire r, if1, if2, j;
 wire [1:0] resultSel_i1, resultSel_i2;
 
