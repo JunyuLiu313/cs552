@@ -20,12 +20,12 @@ input wire [4:0] opcode;
 input wire RegWrite_x, RegWrite_m;
 output wire stall;
 
-wire secondReg;
-assign secondReg = (((|opcode[4:3]) & !opcode[2] & (|opcode[1:0])) | (|opcode[4:2])) | (opcode == 5'b10011) | (opcode == 5'b10000); 
-
+wire secondReg, imm_load;
+assign secondReg = ((opcode[4:2] == 3'b110) & opcode[1:0] != 2'b00) | (opcode[4:2] == 3'b111) | (opcode == 5'b10011) | (opcode == 5'b10000); 
+assign imm_load = (opcode == 5'b11000) | (opcode == 5'b10010); 
 wire stall_SD_x, stall_SD_m;
-assign stall_SD_x = (Rs_d == Rd_x) ? 1'b1 : 1'b0;
-assign stall_SD_m = (Rs_d == Rd_m) ? 1'b1 : 1'b0;
+assign stall_SD_x = ((Rs_d == Rd_x) & !imm_load)? 1'b1 : 1'b0;
+assign stall_SD_m = ((Rs_d == Rd_m) & !imm_load)? 1'b1 : 1'b0;
 
 wire stall_RT_x, stall_RT_m;
 assign stall_RT_x =  (( Rt_d == Rd_x ) & secondReg) ? 1'b1 : 1'b0;

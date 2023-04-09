@@ -134,10 +134,10 @@ module proc_hier_pbench();
    assign RegWrite = DUT.p0.d0.RegWrite_wb;
    // Is register file being written to, one bit signal (1 means yes, 0 means no)
    //    
-   assign WriteRegister = DUT.p0.d0.Rd_wb;
+   assign WriteRegister = DUT.p0.imemwb0.Rd_wb;
    // The name of the register being written to. (3 bit signal)
    
-   assign WriteData = DUT.p0.WBdata;
+   assign WriteData = DUT.p0.iwb0.wbResult;
    // Data being written to the register. (16 bits)
    
    assign MemRead =  DUT.p0.MemRead_m;

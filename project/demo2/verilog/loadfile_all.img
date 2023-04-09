@@ -1,29 +1,19 @@
-Reading line: // Original test: ./neel/hw4/problem6/j_0.asm
-Reading line: // Author: neel
-Reading line: // Test source code follows
-Reading line: 
-Reading line: 
-Reading line: //Tests j  with negative offset
-Reading line: 
-Reading line: lbi r1,255
-Reading line: j 4
-Reading line: lbi r2,20
-Reading line: halt
-Reading line: lbi r2,30
-Reading line: j -8
-Reading line: halt
 @0
 c1
-ff
-20
-04
+64
 c2
-14
-00
-00
-c2
-1e
-27
-f8
+63
+d9
+4c
+db
+28
+d9
+50
+da
+38
+d9
+94
+dd
+30
 00
 00
