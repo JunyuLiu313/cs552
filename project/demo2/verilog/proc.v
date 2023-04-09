@@ -59,7 +59,7 @@ module proc (/*AUTOARG*/
    if_id ifid0    (  .clk(clk), .rst(rst), 
                      .stall_f(stall_f), .stall_d(stall_d),.halt(halt),
                      .instr_f(instr_f), .pc_f(pc_f), .instr_d(instr_d), .pc_d(pc_d),
-                     .branchTaken_x(branchTaken_m));
+                     .branchTaken_m(branchTaken_m));
 
    decode d0      (  .clk(clk), .rst(rst), 
                      .INSTR(instr_d), 
@@ -75,6 +75,7 @@ module proc (/*AUTOARG*/
                      .branchTaken_x(branchTaken_m));
 
    id_ex idex0    (  .clk(clk), .rst(rst), .stall(stall_f),
+                     .branchTaken_m(branchTaken_m),
                      .nop_d(nop_d), .nop_x(nop_x), .Rd_d(Rd_d), .Rd_x(Rd_x), 
                      .RegWrite_d(RegWrite_d), .RegWrite_x(RegWrite_x),
                      .RsData_d(Rs_d), .RtData_d(Rt_d), .Imm_d(Imm_d), .opcode_d(opcode_d), .func_d(func_d), .currPC_d(pc_d),
