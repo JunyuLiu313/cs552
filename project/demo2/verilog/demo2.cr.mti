@@ -180,6 +180,13 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	control
 
+} {} {}} D:/cs552/cs552/project/demo2/verilog/proc_hier_pbench.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/proc_hier_pbench.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module proc_hier_pbench
+
+Top level modules:
+	proc_hier_pbench
+
 } {} {}} D:/cs552/cs552/project/demo2/verilog/not1.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/not1.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module not1
@@ -200,13 +207,6 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 
 Top level modules:
 	alu
-
-} {} {}} D:/cs552/cs552/project/demo2/verilog/if_id.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/if_id.v
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module if_id
-
-Top level modules:
-	if_id
 
 } {} {}} D:/cs552/cs552/project/demo2/verilog/ex_mem.v {1 {vlog -work work -stats=none D:/cs552/cs552/project/demo2/verilog/ex_mem.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016

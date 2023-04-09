@@ -40,7 +40,7 @@ wire haltTemp;
 assign halt = haltTemp & ~rst;
 
 control CS( //  input
-            .INSTR(instr),
+            .INSTR(INSTR),
             //  outputs
             .halt(haltTemp), .nop(nop), .MemRead(MemRead), .RegWrite(RegWrite_d), 
             .MemWrite(MemWrite), .MemToReg(MemToReg), .jump(jump), .JR(JR), .if1(if1), .if2(if2), .j(j), .r(r),

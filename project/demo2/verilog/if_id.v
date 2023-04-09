@@ -11,13 +11,13 @@ wire [15:0] instr, instr_i, pc;
 wire halt_d;
 
 assign halt_d = !(|instr_d[15:11]);
-//assign pc	= stall_f ? pc_d : pc_f;
+assign pc	= stall_f ? pc_d : pc_f;
 
 dff HALT_IFID (.q(halt), .d(halt_d), .clk(clk), .rst(rst));
 
 
-dff_instr INSTR_IFID (.d(instr_f), .q(instr_d), .clk(clk), .rst(1'b0), .flush(branchTaken_m), .stall(stall_f));
-dff PC_IFID [15:0] (.d(pc_f), .q(pc_d), .clk(clk), .rst(rst));
+dff_instr INSTR_IFID (.d(instr_f), .q(instr_d), .clk(clk), .rst(rst), .flush(branchTaken_m), .stall(stall_f));
+dff PC_IFID [15:0] (.d(pc), .q(pc_d), .clk(clk), .rst(rst));
 dff STAL_IFID   (.d(stall_f), .q(stall_d), .clk(clk), .rst(rst));
 
 endmodule 

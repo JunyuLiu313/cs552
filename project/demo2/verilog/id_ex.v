@@ -31,11 +31,11 @@ output wire halt_x, MemRead_x, MemWrite_x, MemToReg_x, branch_x, savePC_x;
 
 
 
-dff RsDX[15:0]  (.d(RsData_d), .q(RsData_x), .clk(clk), .rst(rst));
-dff RtDX[15:0]  (.d(RtData_d), .q(RtData_x), .clk(clk), .rst(rst));
-dff ImmDX[15:0] (.d(Imm_d), .q(Imm_x), .clk(clk), .rst(rst));
-dff PCDX[15:0]  (.d(currPC_d), .q(currPC_x), .clk(clk), .rst(rst));
-dff OpDX[4:0]   (.d(opcode_d), .q(opcode_x), .clk(clk), .rst(rst));
+dff RsDX[15:0]  (.d(stall ? RsData_x : RsData_d), .q(RsData_x), .clk(clk), .rst(rst));
+dff RtDX[15:0]  (.d(stall ? RtData_x : RtData_d), .q(RtData_x), .clk(clk), .rst(rst));
+dff ImmDX[15:0] (.d(stall ? Imm_x : Imm_d), .q(Imm_x), .clk(clk), .rst(rst));
+dff PCDX[15:0]  (.d(stall ? currPC_x : currPC_d), .q(currPC_x), .clk(clk), .rst(rst));
+dff OpDX[4:0]   (.d(stall ? opcode_x : opcode_d), .q(opcode_x), .clk(clk), .rst(rst));
 
 dff funcDX[1:0]   (.d(func_d), .q(func_x), .clk(clk), .rst(rst));
 dff reSelDX[1:0]  (.d(resultSel_d), .q(resultSel_x), .clk(clk), .rst(rst));
