@@ -6,7 +6,7 @@
 */
 `default_nettype none
 module decode(  //  inputs
-                INSTR, clk, rst, WBdata, Rd_wb, RegWrite_wb, branchTaken_x, stall_d,
+                INSTR, clk, rst, WBdata, Rd_wb, RegWrite_wb, branchTaken_x, stall, 
                 //  outputs
                 RsData, RtData, Imm, OPCODE, FUNC, Rd_d, Rt, Rs,
                 //  control signals
@@ -14,11 +14,11 @@ module decode(  //  inputs
                 D_err, resultSel, RegWrite_d);
 
 input wire [15:0] INSTR, WBdata;
-input wire clk, rst, RegWrite_wb, stall_d;
+input wire clk, rst, RegWrite_wb;
 input wire [2:0] Rd_wb;
 
 // flash signals
-input wire branchTaken_x, stall_d;
+input wire branchTaken_x, stall;
 
 output wire [15:0] RsData, RtData, Imm;
 output wire [4:0] OPCODE;
@@ -35,12 +35,14 @@ wire r, if1, if2, j;
 wire [1:0] resultSel_i1, resultSel_i2;
 
 wire [15:0] instr;
-assign instr = (branchTaken_x | stall_d) ? 16'h0800 : INSTR;
+assign instr = (branchTaken_x) ? 16'h0800 : INSTR;
+wire haltTemp;
+assign halt = haltTemp & ~rst;
 
 control CS( //  input
             .INSTR(instr),
             //  outputs
-            .halt(halt), .nop(nop), .MemRead(MemRead), .RegWrite(RegWrite_d), 
+            .halt(haltTemp), .nop(nop), .MemRead(MemRead), .RegWrite(RegWrite_d), 
             .MemWrite(MemWrite), .MemToReg(MemToReg), .jump(jump), .JR(JR), .if1(if1), .if2(if2), .j(j), .r(r),
             .savePC(savePC), .RTI(RTI), .SIIC(SIIC), .OPCODE(OPCODE),
             .FUNC(FUNC), .Rs(Rs), .Rd(Rd_d), .Rt(Rt), .ZeroExt1(ZeroExt1), .ZeroExt2(ZeroExt2), .branch(branch));

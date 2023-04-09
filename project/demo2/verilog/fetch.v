@@ -12,9 +12,9 @@ module fetch (PC, INSTR, clk, rst, currPC, branchTaken, stall);
 	output wire [15:0] INSTR;
 	output wire [15:0]currPC;	
 	
-	wire [15:0] incPC, PC_i, PC_stall;
-
-	cla16b iCLA0	(.sum(incPC), .cOut(), .inA(currPC), .inB(16'h0002), .cIn(1'b0));
+	wire [15:0] incPC, PC_i, PC_stall, PCinc_i;
+	assign PCinc_i = currPC;
+	cla16b iCLA0	(.sum(incPC), .cOut(), .inA(PCinc_i), .inB(16'h0002), .cIn(1'b0));
 	assign PC_i = branchTaken ? PC : incPC;
 	assign PC_stall = stall ? currPC : PC_i;
 
