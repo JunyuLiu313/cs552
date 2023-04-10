@@ -7,7 +7,7 @@
 `default_nettype none
 module execute (
 	// inputs
-	clk, rst, opcode, Rs, Rt, Imm, currPC, FUNC, halt, nop, MemRead, MemWrite, MemtoReg, branch, resultSel,
+	clk, rst, opcode, Rs, Rt, Imm, currPC, FUNC, nop, MemRead, MemWrite, MemtoReg, branch, resultSel,
 	// outputs
 	writeData, nxtPC, MemAddr, ex_err, branchTaken
 );
@@ -16,13 +16,13 @@ module execute (
 	input wire [4:0] opcode;
 	input wire [15:0] Rs, Rt, Imm, currPC;
 	input wire [1:0] FUNC, resultSel;
-	input wire clk, rst,  halt, nop, MemRead, MemWrite, MemtoReg, branch;
+	input wire clk, rst, nop, MemRead, MemWrite, MemtoReg, branch;
 	
 	output wire [15:0] writeData, nxtPC, MemAddr;
 	output wire ex_err;
-
 	output wire branchTaken;
 	
+
 	// temps for all the writeData from the ALUs
 	wire [15:0] r_wData, j_wData, i1_wData, i2_wData;
 	wire [15:0] j_PC, i2_PC;
@@ -45,7 +45,7 @@ module execute (
 				10 -> I2-type
 				11 -> J-type
 	*/
-	assign writeData = (resultSel[1]) ? ((resultSel[0]) ? j_wData : i2_wData) : ((resultSel[0]) ? i1_wData : r_wData);
+	assign writeData = (resultSel[1]) ? ((resultSel[0]) ? currPC : i2_wData) : ((resultSel[0]) ? i1_wData : r_wData);
 
 	// choose the next PC value
 	wire [15:0] normalPC;
@@ -57,9 +57,8 @@ module execute (
 	assign nxtPC = (resultSel == 2'b11) ? j_PC : ((resultSel == 2'b10) ? ((~opcode[4]) ? i2_PC : normalPC) : normalPC);
 	wire branchDetect;
 	assign branchDetect = (~opcode[4] & opcode[3] & opcode[2]) ? 1'b1 : ((~opcode[4] & ~opcode[3] & opcode[2]) ? 1'b1 :1'b0);
-	assign branchTaken = (branchDetect) ? ((nxtPC != normalPC) ? 1'b1 : 1'b0) : 1'b0;
-	// assign branchTaken = (nxtPC != normalPC) ? ~nop : 1'b0;
-	// assign branchTaken = 1'b0;
+	assign branchTaken = (branchDetect) ? ((nxtPC != currPC) ? 1'b1 : 1'b0) : 1'b0;
+
 	// chooose the error signal
 	assign ex_err = (resultSel[1]) ? ((resultSel[0]) ? j_err : i2_err) : ((resultSel[0]) ? i1_err : r_err);
    

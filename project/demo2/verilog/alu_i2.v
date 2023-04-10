@@ -26,13 +26,16 @@ module alu_i2(Rs, Imm, instr, curPC, newPC, writeData, branch, err);
 
 	// branch instructions
 	wire [15:0] branchTakenPC;		// calculate the PC value when we take the branch
-	cla16b adder2(.sum(branchTakenPC), .cOut(), .inA(newR7), .inB(Imm), .cIn(1'b0));	
+	wire [15:0] immPosPC, immNegPC;
+	cla16b adder2(.sum(immPosPC), .cOut(), .inA(curPC), .inB(Imm), .cIn(1'b0));	
+	cla16b adderNeg(.sum(immNegPC), .cOut(), .inA(newR7), .inB(Imm), .cIn(1'b0));	
+	assign branchTakenPC = (Imm[15]) ? immNegPC : immPosPC;
 	wire [15:0] branchPC;			// PC value for branch instructions
 	wire [15:0] beqPC, bnePC, bltPC, bgePC;	// PC values for BEQZ, BNEZ, BLTZ, BGEZ
-	assign beqPC = (Rs == 16'b0) ? branchTakenPC : newR7;
-	assign bnePC = (Rs != 16'b0) ? branchTakenPC : newR7;
-	assign bltPC = (Rs[15]) ? branchTakenPC : newR7;
-	assign bgePC = (~Rs[15]) ? branchTakenPC : newR7;
+	assign beqPC = (Rs == 16'b0) ? branchTakenPC : curPC;
+	assign bnePC = (Rs != 16'b0) ? branchTakenPC : curPC;
+	assign bltPC = (Rs[15]) ? branchTakenPC : curPC;
+	assign bgePC = (~Rs[15]) ? branchTakenPC : curPC;
 	assign branchPC = (instr[1]) ? ((instr[0]) ? bgePC : bltPC)
 			: ((instr[0]) ? bnePC : beqPC);
 	
@@ -43,7 +46,7 @@ module alu_i2(Rs, Imm, instr, curPC, newPC, writeData, branch, err);
 	assign newRs = (instr[1]) ? (shiftRs | Imm) : Imm;
 
 	// choose either Rs or R7 as the output for write data
-	assign writeData = (instr[4]) ? newRs : newR7;
+	assign writeData = (instr[4]) ? newRs : curPC;
 	
 
 	// JR and JALR instructions

@@ -20,7 +20,10 @@ module alu_j(instr, curPC, imm, nxtPC, newR7, err);
 
 	// newR7 = PC + 2
 	cla16b adder1(.sum(newR7), .cOut(), .inA(curPC), .inB(16'h2), .cIn(1'b0));
-	cla16b adder2(.sum(nxtPC), .cOut(), .inA(newR7), .inB(imm), .cIn(1'b0));
+	wire [15:0] immPosPC, immNegPC;
+	cla16b adder2(.sum(immPosPC), .cOut(), .inA(curPC), .inB(imm), .cIn(1'b0));
+	cla16b adderNeg(.sum(immNegPC), .cOut(), .inA(newR7), .inB(imm), .cIn(1'b0));
+	assign nxtPC = (imm[15]) ? immNegPC : immPosPC;
 	
 	assign of1 = (~curPC[15]) ? ((curPC[15] != newR7[15]) ? 1'b1 : 1'b0) : 1'b0;
 	assign of2 = (newR7[15] == imm[15]) ? ((newR7[15] != nxtPC[15]) ? 1'b1 : 1'b0) : 1'b0;

@@ -6,19 +6,19 @@
 */
 `default_nettype none
 module decode(  //  inputs
-                INSTR, clk, rst, WBdata, Rd_wb, RegWrite_wb, branchTaken_x, stall, 
+                INSTR_d, clk, rst, WBdata, Rd_wb, RegWrite_wb, branchTaken_x,
                 //  outputs
                 RsData, RtData, Imm, OPCODE, FUNC, Rd_d, Rt, Rs,
                 //  control signals
-                halt, nop, MemRead, MemWrite, MemToReg, branch, savePC,
+                nop, MemRead, MemWrite, MemToReg, branch, savePC,
                 D_err, resultSel, RegWrite_d);
 
-input wire [15:0] INSTR, WBdata;
+input wire [15:0] INSTR_d, WBdata;
 input wire clk, rst, RegWrite_wb;
 input wire [2:0] Rd_wb;
 
 // flash signals
-input wire branchTaken_x, stall;
+input wire branchTaken_x;
 
 output wire [15:0] RsData, RtData, Imm;
 output wire [4:0] OPCODE;
@@ -28,15 +28,16 @@ output wire [2:0] Rd_d;
 output wire [2:0] Rt, Rs;
 
 //  Control signals
-output wire halt, nop, MemRead, MemWrite, MemToReg, branch, savePC;
+output wire nop, MemRead, MemWrite, MemToReg, branch, savePC;
 wire ZeroExt1, ZeroExt2, RTI, SIIC, jump, JR;
 
 wire r, if1, if2, j;
 wire [1:0] resultSel_i1, resultSel_i2;
 
 wire [15:0] instr;
-assign instr = (branchTaken_x) ? 16'h0800 : INSTR;
-wire haltTemp;
+assign instr = (branchTaken_x) ? 16'h0800 : INSTR_d;
+
+wire haltTemp, halt;
 assign halt = haltTemp & ~rst;
 
 control CS( //  input
