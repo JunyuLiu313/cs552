@@ -36,9 +36,10 @@ dff RtDX[15:0]  (.d(stall ? RtData_x : RtData_d), .q(RtData_x), .clk(clk), .rst(
 dff ImmDX[15:0] (.d(stall ? Imm_x : Imm_d), .q(Imm_x), .clk(clk), .rst(rst));
 dff PCDX[15:0]  (.d(stall ? currPC_x : currPC_d), .q(currPC_x), .clk(clk), .rst(rst));
 dff OpDX[4:0]   (.d(stall ? opcode_x : opcode_d), .q(opcode_x), .clk(clk), .rst(rst));
+// dff_prec OpDX[4:0] (.d(opcode_d), .q(opcode_x), .clk(clk), .rst(rst), .flush(branchTaken_m), .stall(stall));
 
 dff funcDX[1:0]   (.d(func_d), .q(func_x), .clk(clk), .rst(rst));
-dff reSelDX[1:0]  (.d(resultSel_d), .q(resultSel_x), .clk(clk), .rst(rst));
+dff reSelDX[1:0]  (.d(stall ? resultSel_x : resultSel_d), .q(resultSel_x), .clk(clk), .rst(rst));
 
 dff_prec haltDX (.d(halt_d), .q(halt_x), .clk(clk), .rst(rst), .flush(branchTaken_m), .stall(stall));
 dff_prec MemReadDX   (.d(MemRead_d), .q(MemRead_x), .clk(clk), .rst(rst), .flush(branchTaken_m), .stall(stall));
@@ -50,7 +51,7 @@ dff_prec savePcDX    (.d(savePC_d), .q(savePC_x), .clk(clk), .rst(rst), .flush(b
 dff_prec RegWriteDX  (.q(RegWrite_x), .d(RegWrite_d), .clk(clk), .rst(rst), .flush(branchTaken_m), .stall(stall));
 dff RdDX [2:0]  (.q(Rd_x), .d(Rd_d), .clk(clk), .rst(rst));
 
-dff nopDX       (.d(nop_d), .q(nop_x), .clk(clk), .rst(rst));
+dff nopDX       (.d(stall ? nop_x : nop_d), .q(nop_x), .clk(clk), .rst(rst));
 
 endmodule
 `default_nettype wire

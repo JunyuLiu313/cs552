@@ -57,8 +57,8 @@ module execute (
 	assign nxtPC = (resultSel == 2'b11) ? j_PC : ((resultSel == 2'b10) ? ((~opcode[4]) ? i2_PC : normalPC) : normalPC);
 	wire branchDetect;
 	assign branchDetect = (~opcode[4] & opcode[3] & opcode[2]) ? 1'b1 : ((~opcode[4] & ~opcode[3] & opcode[2]) ? 1'b1 :1'b0);
-	//assign branchTaken = (branchDetect) ? ((nxtPC != normalPC) ? 1'b1 : 1'b0) : 1'b0;
-	assign branchTaken = (nxtPC != normalPC) ? 1'b1 : 1'b0;
+	assign branchTaken = (branchDetect) ? ((nxtPC != normalPC) ? 1'b1 : 1'b0) : 1'b0;
+	// assign branchTaken = (nxtPC != normalPC) ? ~nop : 1'b0;
 	// assign branchTaken = 1'b0;
 	// chooose the error signal
 	assign ex_err = (resultSel[1]) ? ((resultSel[0]) ? j_err : i2_err) : ((resultSel[0]) ? i1_err : r_err);

@@ -32,9 +32,11 @@ wire stall_RT_x, stall_RT_m;
 assign stall_RT_x =  (( Rt_d == Rd_x ) & secondReg) ? 1'b1 : 1'b0;
 assign stall_RT_m =  (( Rt_d == Rd_m ) & secondReg) ? 1'b1 : 1'b0;
 
+wire jump;
+assign jump = (opcode[4:2] == 3'b001);
+
 // comb logic for determining stall
-assign stall = (((stall_RT_x | stall_SD_x) & (RegWrite_x)) | ((stall_RT_m | stall_SD_m) & (RegWrite_m)));
-               //(stall_RT_x | stall_RT_m | stall_SD_x | stall_SD_m ) & (RegWrite_m | RegWrite_x); 
+assign stall = (((stall_RT_x | stall_SD_x) & (RegWrite_x)) | ((stall_RT_m | stall_SD_m) & (RegWrite_m))) & ~jump;
 
 endmodule
 `default_nettype wire

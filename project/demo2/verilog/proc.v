@@ -72,7 +72,7 @@ module proc (/*AUTOARG*/
                      .MemRead(MemRead_d), .MemWrite(MemWrite_d), .MemToReg(MemToReg_d), .branch(branch_d),
                      .savePC(savePC_d), .D_err(D_err), .resultSel(resultSel_d),
                      .WBdata(WBdata), .RegWrite_wb(RegWrite_wb), .Rd_wb(Rd_wb),
-                     .branchTaken_x(branchTaken_m));
+                     .branchTaken_x(branchTaken_x));
 
    id_ex idex0    (  .clk(clk), .rst(rst), .stall(stall_f),
                      .branchTaken_m(branchTaken_m),

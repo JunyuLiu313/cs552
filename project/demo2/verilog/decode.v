@@ -40,7 +40,7 @@ wire haltTemp;
 assign halt = haltTemp & ~rst;
 
 control CS( //  input
-            .INSTR(INSTR),
+            .INSTR(instr),
             //  outputs
             .halt(haltTemp), .nop(nop), .MemRead(MemRead), .RegWrite(RegWrite_d), 
             .MemWrite(MemWrite), .MemToReg(MemToReg), .jump(jump), .JR(JR), .if1(if1), .if2(if2), .j(j), .r(r),
@@ -58,12 +58,12 @@ assign resultSel_i2  = r | if2 ? 2'b00 : 2'b01;
 assign resultSel = resultSel_i1 | resultSel_i2;
 
 wire [15:0] Imm_i, i1, i2;
-assign i1 	 =  ZeroExt1 ? {{11{1'b0}}, INSTR[4:0]} : {{11{INSTR[4]}}, INSTR[4:0]}; 
-assign i2 	 =  ZeroExt2 ? {{8{1'b0}}, INSTR[7:0]}	: {{8{INSTR[7]}},INSTR[7:0]};
-assign Imm_i =  ((~INSTR[15]&INSTR[14]&~INSTR[13]) | (INSTR[15]&~INSTR[14]&INSTR[13]) 
-               | (INSTR[15]&~INSTR[14]&~INSTR[13]&~INSTR[12]) 
-               | (INSTR[15]&~INSTR[14]&~INSTR[13]&INSTR[12]&INSTR[11])) ? i1 : i2;
-assign Imm 	 =  (~INSTR[15]&~INSTR[14]&INSTR[13]&~INSTR[11]) ? {{5{INSTR[10]}}, INSTR[10:0]} : Imm_i;
+assign i1 	 =  ZeroExt1 ? {{11{1'b0}}, instr[4:0]} : {{11{instr[4]}}, instr[4:0]}; 
+assign i2 	 =  ZeroExt2 ? {{8{1'b0}}, instr[7:0]}	: {{8{instr[7]}},instr[7:0]};
+assign Imm_i =  ((~instr[15]&instr[14]&~instr[13]) | (instr[15]&~instr[14]&instr[13]) 
+               | (instr[15]&~instr[14]&~instr[13]&~instr[12]) 
+               | (instr[15]&~instr[14]&~instr[13]&instr[12]&instr[11])) ? i1 : i2;
+assign Imm 	 =  (~instr[15]&~instr[14]&instr[13]&~instr[11]) ? {{5{instr[10]}}, instr[10:0]} : Imm_i;
 
 endmodule
 `default_nettype wire
