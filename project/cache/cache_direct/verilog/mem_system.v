@@ -27,8 +27,8 @@ module mem_system(/*AUTOARG*/
    // cache signals
    // inputs 
    reg        enable;
-   reg [8:0]  index;
-   reg [3:0]  offset;
+   reg [7:0]  index;
+   reg [2:0]  offset;
    reg        comp;
    reg        write;
    reg [4:0]  tag_in;
@@ -47,9 +47,59 @@ module mem_system(/*AUTOARG*/
    reg wr_mem, rd_mem;
    // outputs
    reg [15:0] data_out_mem;
-   reg busy;
+   reg [3:0] busy;
+
+   // wire signals to connect to cache and memory modules
+   wire        enable_wire;
+   wire [7:0]  index_wire;
+   wire [2:0]  offset_wire;
+   wire        comp_wire;
+   wire        write_wire;
+   wire [4:0]  tag_in_wire;
+   wire [15:0] data_in_wire;
+   wire        valid_in_wire;
+   // outputs
+   wire        hit_wire;
+   wire        dirty_wire;
+   wire [4:0]  tag_out_wire;
+   wire [15:0] data_out_wire;
+   wire        valid_wire;
+
+   // four-bank mem
+   // inputs
+   wire [15:0] data_in_mem_wire, Addr_mem_wire;
+   wire wr_mem_wire, rd_mem_wire;
+   // outputs
+   wire [15:0] data_out_mem_wire;
+   wire [3:0] busy_wire;
+   wire stall_mem_wire;
+
+
+   
+   // assign all the reg signals to their corresponding wire signals
+   assign enable_wire = enable;
+   assign index_wire = index;
+   assign offset_wire = offset;
+   assign comp_wire = comp;
+   assign write_wire = write;
+   assign tag_in_wire = tag_in;
+   assign data_in_wire = data_in;
+   assign valid_in_wire = valid_in;
+   //assign hit_wire = hit;
+   assign dirty_wire = dirty;
+   assign tag_out_wire = tag_out;
+   assign data_out_wire = data_out;
+   assign valid_wire = valid;
+   assign data_in_mem_wire = data_in_mem;
+   assign Addr_mem_wire = Addr_mem;
+   assign wr_mem_wire = wr_mem;
+   assign rd_mem_wire = rd_mem;
+   assign data_out_mem_wire = data_out_mem;
+   assign busy_wire = busy;
+   
+
    // FSM states
-   parameter
+   parameter [3:0]
    IDLE     =  4'b0000,
    ERR      =  4'b0001,
    COMP1    =  4'b0010,
@@ -72,51 +122,61 @@ module mem_system(/*AUTOARG*/
     * needed for cache parameter */
    parameter memtype = 0;
    cache #(0 + memtype) c0(// Outputs
-                          .tag_out              (tag_out),
-                          .data_out             (data_out),
-                          .hit                  (hit),
-                          .dirty                (dirty),
-                          .valid                (valid),
+                          .tag_out              (tag_out_wire),
+                          .data_out             (data_out_wire),
+                          .hit                  (hit_wire),
+                          .dirty                (dirty_wire),
+                          .valid                (valid_wire),
                           .err                  (err_cache),
                           // Inputs
-                          .enable               (enable),
+                          .enable               (enable_wire),
                           .clk                  (clk),
                           .rst                  (rst),
                           .createdump           (createdump),
-                          .tag_in               (tag_in),
-                          .index                (index),
-                          .offset               (offset),
-                          .data_in              (data_in),
-                          .comp                 (comp),
-                          .write                (write),
-                          .valid_in             (valid_in));
+                          .tag_in               (tag_in_wire),
+                          .index                (index_wire),
+                          .offset               (offset_wire),
+                          .data_in              (data_in_wire),
+                          .comp                 (comp_wire),
+                          .write                (write_wire),
+                          .valid_in             (valid_in_wire));
 
    four_bank_mem mem(// Outputs
-                     .data_out          (data_out_mem),
-                     .stall             (Stall),
-                     .busy              (busy),
+                     .data_out          (data_out_mem_wire),
+                     .stall             (stall_mem_wire),
+                     .busy              (busy_wire),
                      .err               (err_mem),
                      // Inputs
                      .clk               (clk),
                      .rst               (rst),
                      .createdump        (createdump),
-                     .addr              (Addr_mem),
-                     .data_in           (data_in_mem),
-                     .wr                (wr_mem),
-                     .rd                (rd_mem));
+                     .addr              (Addr_mem_wire),
+                     .data_in           (data_in_mem_wire),
+                     .wr                (wr_mem_wire),
+                     .rd                (rd_mem_wire));
    
    reg [3:0] state, nxt_state;
-   dff STATE [3:0] (.q(state), .d(nxt_state), .clk(clk), .rst(rst));  
+   wire [3:0] state_wire, nxt_state_wire;
+   assign nxt_state_wire   = nxt_state;  
+   dff STATE [3:0] (.q(state_wire), .d(nxt_state_wire), .clk(clk), .rst(rst));  
 
    reg err_allign;
+   reg [4:0] tag_ff_d;
+   // wire [4:0] tag_wire_d, tag_wire_q;
+   // assign tag_wire_d = tag_ff_d;
+   // dff TAG[4:0] (.q(tag_wire_q), .d(tag_wire_d), .clk(clk), .rst(rst));
 
-   always @ (state or Rd or Wr)
+always @*
    begin
    
    // defualt logic
+   state    = state_wire;
    enable   = Rd | Wr;
    err      = err_allign | err_cache | err_mem; 
-   valid_in = valid;
+   Done     = 1'b0;
+   Stall    = 1'b0;
+   dirty    = 1'b0;
+   CacheHit = 1'b0;
    
 
       case(state)
@@ -125,10 +185,11 @@ module mem_system(/*AUTOARG*/
             index       = Addr[10:3];
             offset      = Addr[2:0];
             data_in     = Wr ? DataIn : 16'h0000;
-            DataOut     = data_out;
-            nxt_state   =  Addr[0] ? ERR : 
-                           enable & !rst ? 
-                           COMP1 : IDLE;
+            DataOut     = Done ? data_out : DataOut;
+            nxt_state   =  Addr[0] ? ERR : (
+                           (enable & !rst) ? 
+                           COMP1 : IDLE);
+
          end
 
          ERR: begin
@@ -138,7 +199,7 @@ module mem_system(/*AUTOARG*/
 
          COMP1: begin
             comp        = hit;
-            CacheHit    = hit & valid;
+            CacheHit    = hit_wire & valid_wire;
             Done        = CacheHit;
             write       = Wr;
             nxt_state   =  CacheHit ? IDLE :
@@ -147,8 +208,10 @@ module mem_system(/*AUTOARG*/
          end
 
          WB0: begin
+            tag_ff_d    = tag_out;
             comp        = 1'b0;
-            Addr_mem    = {{tag_in}, {index}, 2'b00, {offset[0]}};
+            Stall       = stall_mem_wire;
+            Addr_mem    = {{tag_ff_d}, {index}, 2'b00, {offset[0]}};
             data_in_mem = data_out;
             write       = 0;
             wr_mem      = 1;
@@ -157,7 +220,8 @@ module mem_system(/*AUTOARG*/
 
          WB1: begin
             comp        = 1'b0;
-            Addr_mem    = {{tag_in}, {index}, 2'b01, {offset[0]}};
+            Stall       = stall_mem_wire;
+            Addr_mem    = {{tag_ff_d}, {index}, 2'b01, {offset[0]}};
             data_in_mem = data_out;
             write       = 0;
             wr_mem      = 1;
@@ -166,7 +230,8 @@ module mem_system(/*AUTOARG*/
 
          WB2: begin
             comp        = 1'b0;
-            Addr_mem    = {{tag_in}, {index}, 2'b10, {offset[0]}};
+            Stall       = stall_mem_wire;
+            Addr_mem    = {{tag_ff_d}, {index}, 2'b10, {offset[0]}};
             data_in_mem = data_out;
             write       = 0;
             wr_mem      = 1;
@@ -175,7 +240,8 @@ module mem_system(/*AUTOARG*/
 
          WB3: begin
             comp        = 1'b0;
-            Addr_mem    = {{tag_in}, {index}, 2'b11, {offset[0]}};
+            Stall       = stall_mem_wire;
+            Addr_mem    = {{tag_ff_d}, {index}, 2'b11, {offset[0]}};
             data_in_mem = data_out;
             write       = 0;
             wr_mem      = 1;
