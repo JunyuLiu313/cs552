@@ -26,14 +26,14 @@ module mem_system(/*AUTOARG*/
 
    // cache signals
    // inputs 
-   wire        enable;
-   wire [8:0]  index;
-   wire [3:0]  offset;
-   wire        comp;
-   wire        write;
-   wire [4:0]  tag_in;
-   wire [15:0] data_in;
-   wire        valid_in;
+   reg        enable;
+   reg [8:0]  index;
+   reg [3:0]  offset;
+   reg        comp;
+   reg        write;
+   reg [4:0]  tag_in;
+   reg [15:0] data_in;
+   reg        valid_in;
    // outputs
    reg        hit;
    reg        dirty;
@@ -107,20 +107,20 @@ module mem_system(/*AUTOARG*/
    
    reg [3:0] state, nxt_state;
    dff STATE [3:0] (.q(state), .d(nxt_state), .clk(clk), .rst(rst));  
-   assign state = IDLE;
 
    reg err_allign;
 
    always @ (state or Rd or Wr)
-   begin: FSM_COMB
+   begin
    
    // defualt logic
    enable   = Rd | Wr;
    err      = err_allign | err_cache | err_mem; 
    valid_in = valid;
+   
 
       case(state)
-         IDLE:
+         IDLE: begin
             tag_in      = Addr[15:11];
             index       = Addr[10:3];
             offset      = Addr[2:0];
@@ -129,10 +129,14 @@ module mem_system(/*AUTOARG*/
             nxt_state   =  Addr[0] ? ERR : 
                            enable & !rst ? 
                            COMP1 : IDLE;
-         ERR:
+         end
+
+         ERR: begin
             err_allign  = 1'b1;
             nxt_state   = IDLE;
-         COMP1:
+         end
+
+         COMP1: begin
             comp        = hit;
             CacheHit    = hit & valid;
             Done        = CacheHit;
@@ -140,49 +144,63 @@ module mem_system(/*AUTOARG*/
             nxt_state   =  CacheHit ? IDLE :
                            !dirty ?
                            ALLOC0 : WB0;
-         WB0:
+         end
+
+         WB0: begin
             comp        = 1'b0;
             Addr_mem    = {{tag_in}, {index}, 2'b00, {offset[0]}};
             data_in_mem = data_out;
             write       = 0;
             wr_mem      = 1;
             nxt_state   = Stall ? state : WB1;
-         WB1:
+         end
+
+         WB1: begin
             comp        = 1'b0;
             Addr_mem    = {{tag_in}, {index}, 2'b01, {offset[0]}};
             data_in_mem = data_out;
             write       = 0;
             wr_mem      = 1;
             nxt_state   = Stall ? state : WB2;
-         WB2:
+         end
+
+         WB2: begin
             comp        = 1'b0;
             Addr_mem    = {{tag_in}, {index}, 2'b10, {offset[0]}};
             data_in_mem = data_out;
             write       = 0;
             wr_mem      = 1;
             nxt_state   = Stall ? state : WB3;
-         WB3:
+         end
+
+         WB3: begin
             comp        = 1'b0;
             Addr_mem    = {{tag_in}, {index}, 2'b11, {offset[0]}};
             data_in_mem = data_out;
             write       = 0;
             wr_mem      = 1;
             nxt_state   = Stall ? state : ALLOC0;
-         ALLOC0:
+         end
+
+         ALLOC0: begin
             comp        = 1'b0;
             Addr_mem    = {{tag_in}, {index}, 2'b00, {offset[0]}};
             write       = 0;
             wr_mem      = 0;
             rd_mem      = 1;
             nxt_state   = ALLOC1;
-         ALLOC1:
+         end
+
+         ALLOC1: begin
             comp        = 1'b0;
             Addr_mem    = {{tag_in}, {index}, 2'b01, {offset[0]}};
             write       = 0;
             wr_mem      = 0;
             rd_mem      = 1;
             nxt_state   = ALLOC2;
-         ALLOC2:
+         end
+
+         ALLOC2: begin
             comp        = 1'b0;
             Addr_mem    = {{tag_in}, {index}, 2'b10, {offset[0]}};
             data_in     = data_out_mem; 
@@ -190,7 +208,9 @@ module mem_system(/*AUTOARG*/
             wr_mem      = 0;
             rd_mem      = 1;
             nxt_state   = ALLOC3;
-         ALLOC3:
+         end
+
+         ALLOC3: begin
             comp        = 1'b0;
             Addr_mem    = {{tag_in}, {index}, 2'b11, {offset[0]}};
             data_in     = data_out_mem; 
@@ -198,26 +218,37 @@ module mem_system(/*AUTOARG*/
             wr_mem      = 0;
             rd_mem      = 1;
             nxt_state   = ALLOC4;
-         ALLOC4:
+         end
+
+         ALLOC4: begin
             comp        = 1'b0;
             data_in     = data_out_mem;
             write       = 1;
             wr_mem      = 0;
             rd_mem      = 0;
             nxt_state   = ALLOC5;
-         ALLOC5:
+         end
+
+         ALLOC5: begin
             comp        = 1'b0;
             data_in     = data_out_mem;
             write       = 1;
             wr_mem      = 0;
             rd_mem      = 0;
             nxt_state   = COMP2;
-         COMP2:
+         end
+
+         COMP2: begin
             Done        = 1'b1;
             write       = Wr;
             data_in     = DataIn;
             comp        = 1'b1;
             nxt_state   = IDLE;
+         end
+
+         default: begin 
+            nxt_state = IDLE;
+         end
       endcase
    end 
    
