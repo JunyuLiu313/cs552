@@ -70,9 +70,9 @@ module mem_system(/*AUTOARG*/
    wire [15:0] data_in_mem_wire, Addr_mem_wire;
    wire wr_mem_wire, rd_mem_wire;
    // outputs
-   wire [15:0] data_out_mem_wire;
-   wire [3:0] busy_wire;
-   wire stall_mem_wire;
+   wire [15:0]    data_out_mem_wire;
+   wire [3:0]     busy_wire;
+   wire           stall_mem_wire;
 
 
    
@@ -86,23 +86,23 @@ module mem_system(/*AUTOARG*/
    assign data_in_wire = data_in;
    assign valid_in_wire = valid_in;
    //assign hit_wire = hit;
-   assign dirty_wire = dirty;
-   assign tag_out_wire = tag_out;
-   assign data_out_wire = data_out;
-   assign valid_wire = valid;
+   // assign dirty_wire = dirty;
+   // assign tag_out_wire = tag_out;
+   // assign data_out_wire = data_out;
+   // assign valid_wire = valid;
    assign data_in_mem_wire = data_in_mem;
    assign Addr_mem_wire = Addr_mem;
    assign wr_mem_wire = wr_mem;
    assign rd_mem_wire = rd_mem;
-   assign data_out_mem_wire = data_out_mem;
-   assign busy_wire = busy;
+   // assign data_out_mem_wire = data_out_mem;
+   // assign busy_wire = busy;
    
 
    // FSM states
-   parameter [3:0]
-   IDLE     =  4'b0000,
-   ERR      =  4'b0001,
-   COMP1    =  4'b0010,
+   localparam [3:0]
+   IDLE     =  4'b0000;
+   localparam [3:0] ERR      =  4'b1111;
+   localparam [3:0] COMP1    =  4'b0010,
    WB0      =  4'b0011,
    WB1      =  4'b0100,
    WB2      =  4'b0101,
@@ -170,13 +170,29 @@ always @*
    begin
    
    // defualt logic
+   hit      = hit_wire;
+   dirty    = dirty_wire;
+   tag_out  = tag_out_wire;   
+   data_out = data_out_wire;   
+   valid    = valid_wire;
+
    state    = state_wire;
+
+   write    = 1'b0;
+   tag_in   = 5'b0;
+   index    = 8'b0;   
+   offset   = 3'b0;
+   data_in  = 16'b0;
+   data_out = data_out_mem_wire;
+   busy     = busy_wire;
    enable   = Rd | Wr;
    err      = err_allign | err_cache | err_mem; 
    Done     = 1'b0;
    Stall    = 1'b0;
    dirty    = 1'b0;
    CacheHit = 1'b0;
+
+   nxt_state = 4'h0;
    
 
       case(state)
@@ -186,9 +202,9 @@ always @*
             offset      = Addr[2:0];
             data_in     = Wr ? DataIn : 16'h0000;
             DataOut     = Done ? data_out : DataOut;
-            nxt_state   =  Addr[0] ? ERR : (
-                           (enable & !rst) ? 
-                           COMP1 : IDLE);
+            nxt_state   =  rst ? IDLE :
+                           (Addr[0] ? ERR :  
+                           enable ? COMP1 : IDLE);
 
          end
 
