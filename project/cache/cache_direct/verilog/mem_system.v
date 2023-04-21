@@ -83,7 +83,7 @@ module mem_system(/*AUTOARG*/
    assign comp_wire = comp;
    assign write_wire = write;
    assign tag_in_wire = tag_in;
-   assign data_in_wire = data_in;
+   assign data_in_wire = comp ? DataIn : data_out_mem_wire;
    assign valid_in_wire = valid_in;
    //assign hit_wire = hit;
    // assign dirty_wire = dirty;
@@ -100,9 +100,9 @@ module mem_system(/*AUTOARG*/
 
    // FSM states
    localparam [3:0]
-   IDLE     =  4'b0000;
-   localparam [3:0] ERR      =  4'b1111;
-   localparam [3:0] COMP1    =  4'b0010,
+   IDLE     =  4'b0000,
+   ERR      =  4'b1111,
+   COMP1    =  4'b0010,
    WB0      =  4'b0011,
    WB1      =  4'b0100,
    WB2      =  4'b0101,
@@ -113,7 +113,8 @@ module mem_system(/*AUTOARG*/
    ALLOC3   =  4'b1010,
    ALLOC4   =  4'b1011,
    ALLOC5   =  4'b1100,
-   COMP2    =  4'b1101;
+   COMP2    =  4'b1101,
+   DONE     =  4'b1110;
 
    // error signals from cache and 4-ban mem
    wire err_cache, err_mem;
@@ -177,31 +178,44 @@ always @*
    valid    = valid_wire;
 
    state    = state_wire;
-
+   err_allign = 0;
    write    = 1'b0;
    tag_in   = 5'b0;
    index    = 8'b0;   
    offset   = 3'b0;
    data_in  = 16'b0;
-   data_out = data_out_mem_wire;
+   data_out_mem = data_out_mem_wire;
    busy     = busy_wire;
    enable   = Rd | Wr;
-   err      = err_allign | err_cache | err_mem; 
    Done     = 1'b0;
-   Stall    = 1'b0;
+   Stall    = 1'b1;
    dirty    = 1'b0;
    CacheHit = 1'b0;
+
+   // cache inputs
+   tag_in      = Addr[15:11];
+   index       = Addr[10:3];
+   offset      = Addr[2:0];
 
    nxt_state = 4'h0;
    
 
       case(state)
          IDLE: begin
-            tag_in      = Addr[15:11];
-            index       = Addr[10:3];
-            offset      = Addr[2:0];
+            valid_in    = Rd | Wr;
+            DataOut     = data_out_wire;
+            data_in_mem = DataIn;
+            Addr_mem    = 16'h0;
+            wr_mem      = 0;
+            rd_mem      = 0;
+            comp        = 0;
+
             data_in     = Wr ? DataIn : 16'h0000;
-            DataOut     = Done ? data_out : DataOut;
+            // DataOut     = data_out;
+
+            // only not stall in IDLE state
+            Stall       = 1'b0;
+
             nxt_state   =  rst ? IDLE :
                            (Addr[0] ? ERR :  
                            enable ? COMP1 : IDLE);
@@ -210,109 +224,112 @@ always @*
 
          ERR: begin
             err_allign  = 1'b1;
+            err         = err_allign | err_cache | err_mem;
             nxt_state   = IDLE;
          end
 
          COMP1: begin
+            enable      = 1'b1;
             comp        = hit;
             CacheHit    = hit_wire & valid_wire;
             Done        = CacheHit;
             write       = Wr;
             nxt_state   =  CacheHit ? IDLE :
-                           !dirty ?
+                           ~dirty ?
                            ALLOC0 : WB0;
          end
 
          WB0: begin
             tag_ff_d    = tag_out;
             comp        = 1'b0;
-            Stall       = stall_mem_wire;
-            Addr_mem    = {{tag_ff_d}, {index}, 2'b00, {offset[0]}};
+
+            Addr_mem    = {{Addr[15:3]}, 3'b000};
             data_in_mem = data_out;
             write       = 0;
-            wr_mem      = 1;
-            nxt_state   = Stall ? state : WB1;
+            wr_mem      = 1'b1;
+            nxt_state   = stall_mem_wire ? state : WB1;
          end
 
          WB1: begin
             comp        = 1'b0;
-            Stall       = stall_mem_wire;
-            Addr_mem    = {{tag_ff_d}, {index}, 2'b01, {offset[0]}};
+            Addr_mem    = {{Addr[15:3]}, 3'b010};
             data_in_mem = data_out;
             write       = 0;
-            wr_mem      = 1;
-            nxt_state   = Stall ? state : WB2;
+            wr_mem      = 1'b1;
+            nxt_state   = stall_mem_wire ? state : WB2;
          end
 
          WB2: begin
             comp        = 1'b0;
-            Stall       = stall_mem_wire;
-            Addr_mem    = {{tag_ff_d}, {index}, 2'b10, {offset[0]}};
+            Addr_mem    = {{Addr[15:3]}, 3'b100};
             data_in_mem = data_out;
             write       = 0;
-            wr_mem      = 1;
-            nxt_state   = Stall ? state : WB3;
+            wr_mem      = 1'b1;
+            nxt_state   = stall_mem_wire ? state : WB3;
          end
 
          WB3: begin
             comp        = 1'b0;
-            Stall       = stall_mem_wire;
-            Addr_mem    = {{tag_ff_d}, {index}, 2'b11, {offset[0]}};
+            Addr_mem    = {{Addr[15:3]}, 3'b110};
             data_in_mem = data_out;
             write       = 0;
-            wr_mem      = 1;
-            nxt_state   = Stall ? state : ALLOC0;
+            wr_mem      = 1'b1;
+            nxt_state   = stall_mem_wire ? state : ALLOC0;
          end
 
          ALLOC0: begin
             comp        = 1'b0;
-            Addr_mem    = {{tag_in}, {index}, 2'b00, {offset[0]}};
+            Addr_mem    = {{Addr[15:3]}, 3'b000};
             write       = 0;
             wr_mem      = 0;
             rd_mem      = 1;
-            nxt_state   = ALLOC1;
+            nxt_state   = stall_mem_wire ? state : ALLOC1;
          end
 
          ALLOC1: begin
             comp        = 1'b0;
-            Addr_mem    = {{tag_in}, {index}, 2'b01, {offset[0]}};
+            Addr_mem    = {{Addr[15:3]}, 3'b010};
             write       = 0;
             wr_mem      = 0;
             rd_mem      = 1;
-            nxt_state   = ALLOC2;
+            nxt_state   = stall_mem_wire ? state : ALLOC2;
          end
 
          ALLOC2: begin
             comp        = 1'b0;
-            Addr_mem    = {{tag_in}, {index}, 2'b10, {offset[0]}};
+            offset      = 3'b000;
+            Addr_mem    = {{Addr[15:3]}, 3'b100};
             data_in     = data_out_mem; 
             write       = 1;
             wr_mem      = 0;
             rd_mem      = 1;
-            nxt_state   = ALLOC3;
+            nxt_state   = stall_mem_wire ? state : ALLOC3;
          end
 
          ALLOC3: begin
             comp        = 1'b0;
-            Addr_mem    = {{tag_in}, {index}, 2'b11, {offset[0]}};
+            offset      = 3'b010;
+            Addr_mem    = {{Addr[15:3]}, 3'b110};
             data_in     = data_out_mem; 
             write       = 1;
             wr_mem      = 0;
             rd_mem      = 1;
-            nxt_state   = ALLOC4;
+            nxt_state   = stall_mem_wire ? state : ALLOC4;
          end
 
          ALLOC4: begin
             comp        = 1'b0;
+            offset      = 3'b100;
             data_in     = data_out_mem;
             write       = 1;
             wr_mem      = 0;
             rd_mem      = 0;
-            nxt_state   = ALLOC5;
+            nxt_state   = stall_mem_wire ? state : ALLOC5;
          end
 
          ALLOC5: begin
             comp        = 1'b0;
+            offset      = 3'b110;
             data_in     = data_out_mem;
             write       = 1;
             wr_mem      = 0;
@@ -321,10 +338,25 @@ always @*
          end
 
          COMP2: begin
-            Done        = 1'b1;
+            //Done        = 1'b1;
             write       = Wr;
             data_in     = DataIn;
             comp        = 1'b1;
+
+            // read the output from cache
+            enable      = 1'b1;
+
+            nxt_state   = DONE;
+         end
+
+         // assign the data output
+         DONE: begin
+            DataOut     = data_out;
+            Done        = 1'b1;
+            enable      = 1'b1;
+            comp        = 1'b1;
+            // write       = Wr;
+
             nxt_state   = IDLE;
          end
 
