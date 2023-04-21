@@ -208,7 +208,10 @@ always @*
             Addr_mem    = 16'h0;
             wr_mem      = 0;
             rd_mem      = 0;
-            comp        = 0;
+            comp        = hit;
+            CacheHit    = hit_wire & valid_wire;
+            Done        = CacheHit;
+            write       = Wr;
 
             data_in     = Wr ? DataIn : 16'h0000;
             // DataOut     = data_out;
@@ -216,9 +219,11 @@ always @*
             // only not stall in IDLE state
             Stall       = 1'b0;
 
-            nxt_state   =  rst ? IDLE :
-                           (Addr[0] ? ERR :  
-                           enable ? COMP1 : IDLE);
+            nxt_state   =  Addr[0] ? ERR :
+                           (rst | ~enable | CacheHit) ? IDLE  :
+                           dirty ? WB0 :
+                           ALLOC0;
+
 
          end
 
