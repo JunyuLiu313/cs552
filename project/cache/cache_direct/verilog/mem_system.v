@@ -83,7 +83,7 @@ module mem_system(/*AUTOARG*/
    assign comp_wire = comp;
    assign write_wire = write;
    assign tag_in_wire = tag_in;
-   assign data_in_wire = comp ? DataIn : data_out_mem_wire;
+   assign data_in_wire = data_in ;
    assign valid_in_wire = valid_in;
    //assign hit_wire = hit;
    // assign dirty_wire = dirty;
@@ -159,7 +159,15 @@ module mem_system(/*AUTOARG*/
    reg [3:0] state, nxt_state;
    wire [3:0] state_wire, nxt_state_wire;
    assign nxt_state_wire   = nxt_state;  
-   dff STATE [3:0] (.q(state_wire), .d(nxt_state_wire), .clk(clk), .rst(rst));  
+   dff STATE [3:0] (.q(state_wire), .d(nxt_state_wire), .clk(clk), .rst(rst));
+
+   // flipflop the inputs
+   wire [15:0] Addr_ff, DataIn_ff;
+   wire Rd_ff, Wr_ff;
+   dff_enable ADDR [15:0] (.q(Addr_ff), .d(Addr), .clk(clk), .rst(rst), .enable(~Stall));  
+   dff_enable DATAIN [15:0] (.q(DataIn_ff), .d(DataIn), .clk(clk), .rst(rst), .enable(~Stall));
+   dff_enable READ (.q(Rd_ff), .d(Rd), .clk(clk), .rst(rst), .enable(~Stall)); 
+   dff_enable WRITE (.q(Wr_ff), .d(Wr), .clk(clk), .rst(rst), .enable(~Stall));     
 
    reg err_allign;
    reg [4:0] tag_ff_d;
@@ -171,58 +179,60 @@ always @*
    begin
    
    // defualt logic
-   hit      = hit_wire;
+   // hit      = hit_wire;
    dirty    = dirty_wire;
-   tag_out  = tag_out_wire;   
+   // tag_out  = tag_out_wire;   
    data_out = data_out_wire;   
-   valid    = valid_wire;
+   // valid    = valid_wire;
 
    state    = state_wire;
    err_allign = 0;
    write    = 1'b0;
-   tag_in   = 5'b0;
-   index    = 8'b0;   
-   offset   = 3'b0;
+
    data_in  = 16'b0;
    data_out_mem = data_out_mem_wire;
    busy     = busy_wire;
-   enable   = Rd | Wr;
+   enable   = Rd_ff | Wr_ff;
    Done     = 1'b0;
    Stall    = 1'b1;
+   DataOut     = data_out_wire;
+
    // dirty    = 1'b0;
    CacheHit = 1'b0;
 
    // cache inputs
-   tag_in      = Addr[15:11];
-   index       = Addr[10:3];
-   offset      = Addr[2:0];
+   tag_in      = Addr_ff[15:11];
+   index       = Addr_ff[10:3];
+   offset      = Addr_ff[2:0];
+   valid_in    = Wr_ff | Rd_ff;
 
    nxt_state = 4'h0;
    
 
       case(state)
          IDLE: begin
-            valid_in    = Rd | Wr;
-            DataOut     = data_out_wire;
-            data_in_mem = DataIn;
+            valid_in    = Rd | Wr; //Rd_ff | Wr_ff;
+            // DataOut     = data_out_wire;
+            data_in_mem = DataIn; //DataIn_ff;
             Addr_mem    = 16'h0;
             wr_mem      = 0;
             rd_mem      = 0;
-            comp        = hit;
-            CacheHit    = hit_wire & valid_wire;
-            Done        = CacheHit;
-            write       = Wr;
+            comp        = hit_wire;
+            // CacheHit    = hit_wire & valid_wire;
+            // Done        = CacheHit;
+            // write       = Wr_ff;
 
             data_in     = Wr ? DataIn : 16'h0000;
             // DataOut     = data_out;
 
             // only not stall in IDLE state
-            Stall       = 1'b0;
+            Stall       = (nxt_state != IDLE);
 
-            nxt_state   =  Addr[0] ? ERR :
-                           (rst | ~enable | CacheHit) ? IDLE  :
-                           dirty ? WB0 :
-                           ALLOC0;
+
+            // only go to COMP1 if Rd or Wr is true
+            nxt_state   =  Addr_ff[0] ? ERR :
+                           (Rd | Wr) ? COMP1: 
+                           IDLE;
 
 
          end
@@ -235,20 +245,21 @@ always @*
 
          COMP1: begin
             enable      = 1'b1;
-            comp        = hit;
+            comp        = hit_wire;
             CacheHit    = hit_wire & valid_wire;
             Done        = CacheHit;
-            write       = Wr;
+            write       = Wr_ff & CacheHit;
             nxt_state   =  CacheHit ? IDLE :
-                           ~dirty ?
+                           (~dirty_wire) ?
                            ALLOC0 : WB0;
          end
 
          WB0: begin
-            tag_ff_d    = tag_out;
+            tag_in      = tag_out_wire;
             comp        = 1'b0;
 
-            Addr_mem    = {{Addr[15:3]}, 3'b000};
+            // Addr_mem    = {{Addr_ff[15:3]}, 3'b000};
+            Addr_mem    = {tag_out_wire, Addr_ff[10:3], 3'b000};
             data_in_mem = data_out;
             write       = 0;
             wr_mem      = 1'b1;
@@ -257,7 +268,8 @@ always @*
 
          WB1: begin
             comp        = 1'b0;
-            Addr_mem    = {{Addr[15:3]}, 3'b010};
+            // Addr_mem    = {{Addr_ff[15:3]}, 3'b010};
+            Addr_mem    = {tag_out_wire, Addr_ff[10:3], 3'b010};
             data_in_mem = data_out;
             write       = 0;
             wr_mem      = 1'b1;
@@ -266,7 +278,8 @@ always @*
 
          WB2: begin
             comp        = 1'b0;
-            Addr_mem    = {{Addr[15:3]}, 3'b100};
+            // Addr_mem    = {{Addr_ff[15:3]}, 3'b100};
+            Addr_mem    = {tag_out_wire, Addr_ff[10:3], 3'b100};
             data_in_mem = data_out;
             write       = 0;
             wr_mem      = 1'b1;
@@ -275,51 +288,54 @@ always @*
 
          WB3: begin
             comp        = 1'b0;
-            Addr_mem    = {{Addr[15:3]}, 3'b110};
+            // Addr_mem    = {{Addr_ff[15:3]}, 3'b110};
+            Addr_mem    = {tag_out_wire, Addr_ff[10:3], 3'b110};
             data_in_mem = data_out;
             write       = 0;
             wr_mem      = 1'b1;
-            nxt_state   = stall_mem_wire ? state : ALLOC0;
+            nxt_state   = ALLOC0;
          end
 
          ALLOC0: begin
             comp        = 1'b0;
-            Addr_mem    = {{Addr[15:3]}, 3'b000};
+            Addr_mem    = {{Addr_ff[15:3]}, 3'b000};
             write       = 0;
             wr_mem      = 0;
             rd_mem      = 1;
-            nxt_state   = stall_mem_wire ? state : ALLOC1;
+            nxt_state   = ALLOC1;
          end
 
          ALLOC1: begin
             comp        = 1'b0;
-            Addr_mem    = {{Addr[15:3]}, 3'b010};
+            Addr_mem    = {{Addr_ff[15:3]}, 3'b010};
             write       = 0;
             wr_mem      = 0;
             rd_mem      = 1;
-            nxt_state   = stall_mem_wire ? state : ALLOC2;
+            nxt_state   = ALLOC2;
          end
 
          ALLOC2: begin
             comp        = 1'b0;
             offset      = 3'b000;
-            Addr_mem    = {{Addr[15:3]}, 3'b100};
+            Addr_mem    = {{Addr_ff[15:3]}, 3'b100};
             data_in     = data_out_mem; 
             write       = 1;
+            valid_in    = 1;
             wr_mem      = 0;
             rd_mem      = 1;
-            nxt_state   = stall_mem_wire ? state : ALLOC3;
+            nxt_state   = ALLOC3;
          end
 
          ALLOC3: begin
             comp        = 1'b0;
             offset      = 3'b010;
-            Addr_mem    = {{Addr[15:3]}, 3'b110};
+            Addr_mem    = {{Addr_ff[15:3]}, 3'b110};
             data_in     = data_out_mem; 
             write       = 1;
+            valid_in    = 1;
             wr_mem      = 0;
             rd_mem      = 1;
-            nxt_state   = stall_mem_wire ? state : ALLOC4;
+            nxt_state   = ALLOC4;
          end
 
          ALLOC4: begin
@@ -327,9 +343,10 @@ always @*
             offset      = 3'b100;
             data_in     = data_out_mem;
             write       = 1;
+            valid_in    = 1;
             wr_mem      = 0;
             rd_mem      = 0;
-            nxt_state   = stall_mem_wire ? state : ALLOC5;
+            nxt_state   = ALLOC5;
          end
 
          ALLOC5: begin
@@ -337,6 +354,7 @@ always @*
             offset      = 3'b110;
             data_in     = data_out_mem;
             write       = 1;
+            valid_in    = 1;
             wr_mem      = 0;
             rd_mem      = 0;
             nxt_state   = COMP2;
@@ -346,7 +364,7 @@ always @*
             //Done        = 1'b1;
             write       = Wr;
             data_in     = DataIn;
-            comp        = 1'b1;
+            comp        = 1'b0;
 
             // read the output from cache
             enable      = 1'b1;
@@ -360,7 +378,7 @@ always @*
             Done        = 1'b1;
             enable      = 1'b1;
             comp        = 1'b1;
-            // write       = Wr;
+            write       = Wr;
 
             nxt_state   = IDLE;
          end
