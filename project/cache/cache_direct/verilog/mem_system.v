@@ -189,7 +189,7 @@ always @*
    enable   = Rd | Wr;
    Done     = 1'b0;
    Stall    = 1'b1;
-   dirty    = 1'b0;
+   // dirty    = 1'b0;
    CacheHit = 1'b0;
 
    // cache inputs
