@@ -189,7 +189,7 @@ always @*
    err_allign = 0;
    write    = 1'b0;
 
-   data_in  = 16'b0;
+   data_in  = DataIn;
    data_out_mem = data_out_mem_wire;
    busy     = busy_wire;
    enable   = Rd_ff | Wr_ff;
@@ -264,6 +264,8 @@ always @*
             write       = 0;
             wr_mem      = 1'b1;
             nxt_state   = stall_mem_wire ? state : WB1;
+            // read word 0 from cache
+            offset = 3'b000;
          end
 
          WB1: begin
@@ -274,6 +276,8 @@ always @*
             write       = 0;
             wr_mem      = 1'b1;
             nxt_state   = stall_mem_wire ? state : WB2;
+            // read word 1 from cache
+            offset = 3'b010;
          end
 
          WB2: begin
@@ -284,6 +288,8 @@ always @*
             write       = 0;
             wr_mem      = 1'b1;
             nxt_state   = stall_mem_wire ? state : WB3;
+            // read word 2 from cache
+            offset = 3'b100;
          end
 
          WB3: begin
@@ -294,6 +300,8 @@ always @*
             write       = 0;
             wr_mem      = 1'b1;
             nxt_state   = ALLOC0;
+            // read word 3 from cache
+            offset = 3'b110;
          end
 
          ALLOC0: begin
@@ -364,7 +372,7 @@ always @*
             //Done        = 1'b1;
             write       = Wr;
             data_in     = DataIn;
-            comp        = 1'b0;
+            comp        = Wr;//1'b0;
 
             // read the output from cache
             enable      = 1'b1;
