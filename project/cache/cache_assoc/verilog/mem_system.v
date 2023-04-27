@@ -64,12 +64,6 @@ module mem_system(/*AUTOARG*/
    assign   data_in_c_wire = data_in;
    assign   valid_in_wire = valid_in;
 
-   //  mem system level
-   reg [15:0] DataOut_ff;
-   wire [15:0] DataOut_ff_wire, DataOut_wire;
-   assign DataOut_ff_wire = DataOut_ff;
-   dff DATAOUT [15:0] (.d(DataOut_ff_wire), .q(DataOut), .clk(clk), .rst(rst));
-
    // four-bank memory
    // outputs
    wire [15:0]    data_out_mem_wire;
@@ -209,7 +203,6 @@ module mem_system(/*AUTOARG*/
       err_allign ?
    */
    reg            err_allign;
-   
 
    // FSM
    always @*
@@ -225,8 +218,8 @@ module mem_system(/*AUTOARG*/
 
       
       // cache inputs default values
-      enable_c0   =  ~way_ff_q & (Rd_ff | Wr_ff);
-      enable_c1   =  way_ff_q & (Rd_ff | Wr_ff);
+      enable_c0   =  (state == DONE) ? ~way_ff_q & Rd_ff : ~way_ff_q & (Rd_ff | Wr_ff);
+      enable_c1   =  (state == DONE) ? way_ff_q & Rd_ff : way_ff_q & (Rd_ff | Wr_ff);
       // enable_c0   = ~victimway_q;
       // enable_c1   = victimway_q;
       tag_in      = Addr_ff[15:11];
@@ -238,7 +231,8 @@ module mem_system(/*AUTOARG*/
       write_c0    = 1'b0;
       write_c1    = 1'b0;
       valid_in    = Rd_ff | Wr_ff;
-      DataOut_ff     = way_ff_q ? data_out_c1 : data_out_c0;
+      DataOut     = (state == COMP1) ? ((hit_c0 & valid_c0) ? data_out_c0 : (hit_c1 & valid_c1) ? data_out_c1 : 16'h0000) :
+                                       (way_ff_q ? data_out_c1 : data_out_c0);  // otherwise take the output after FF latches victimway
 
       // memory inputs default values
       Addr_mem    = 16'h0;
@@ -253,6 +247,8 @@ module mem_system(/*AUTOARG*/
          IDLE: begin
             // comp_c0     = hit_c0;
             // comp_c1     = hit_c1;
+            enable_c0   = 1'b0;
+            enable_c1   = 1'b0;
             Stall       = 1'b0;
             nxt_state   = Addr_ff[0] ? ERR :
                            (Rd | Wr) ? COMP1 :
@@ -265,8 +261,8 @@ module mem_system(/*AUTOARG*/
          end
 
          COMP1: begin
-            enable_c0   = 1;
-            enable_c1   = 1;
+            enable_c0   = 1'b1;
+            enable_c1   = 1'b1;
             CacheHit    = (hit_c0 & valid_c0) | (hit_c1 & valid_c1);
             Done        = CacheHit;
             comp_c0     = (Rd_ff | Wr_ff); //hit_c0;
@@ -278,7 +274,7 @@ module mem_system(/*AUTOARG*/
             // if choose way 1 and way 1 is dirty, go to writeback.
             // otherwise go to allocate
             nxt_state   = CacheHit ? IDLE :
-                           ((~way_ff_q & ~dirty_c0) | (way_ff_q & ~dirty_c1)) ? ALLOC0 :
+                           ((~way_ff_d & ~dirty_c0) | (way_ff_d & ~dirty_c1)) ? ALLOC0 :
                            WB0;
 
          end
@@ -388,17 +384,19 @@ module mem_system(/*AUTOARG*/
             data_in     = DataIn;
             write_c0    = Wr_ff;
             write_c1    = Wr_ff;
-            comp_c0     = Wr_ff;
-            comp_c1     = Wr_ff;
+            comp_c0     = Rd_ff | Wr_ff;
+            comp_c1     = Rd_ff | Wr_ff;
 
             nxt_state   = DONE;
          end
 
          DONE: begin
-            comp_c0     = 1;
-            comp_c1     = 1;
-            write_c0    = Wr;
-            write_c1    = Wr;
+            //enable_c0 = 1'b1;
+            //enable_c1 = 1'b1;
+            comp_c0     = Rd_ff; //1'b1;
+            comp_c1     = Rd_ff; //1'b1;
+            write_c0    = 1'b0; //Wr_ff;
+            write_c1    = 1'b0; //Wr_ff;
             Done        = 1'b1;
             nxt_state   = IDLE;
          end
