@@ -59,7 +59,7 @@ assign forward_Rt_x =  (( Rt_d == Rd_x ) & secondReg) ? 1'b1 : 1'b0;
 assign forward_Rt_m =  (( Rt_d == Rd_m ) & secondReg) ? 1'b1 : 1'b0;
 
 wire jump;
-assign jump = (opcode_d[4:1] == 3'b0011) & (Rd_x == 3'b111 | Rd_m == 3'b111);
+assign jump = (opcode_d[4:1] == 4'b0011) & (Rd_x == 3'b111 | Rd_m == 3'b111);
 
 // check if the current instruction in execute stage is ld
 wire ld_ex;
@@ -77,11 +77,11 @@ assign forward = ((forward_Rt_x | forward_Rs_x) & (RegWrite_x) & ~ld_ex) | ((for
    or the data from memory using load instruction
 */
 assign Rs_forward = (RegWrite_x & forward_Rs_x) ? Rd_data_x :
-                     (RegWrite_m & forward_Rs_m & (ld_ex | memRead)) ? Rd_data_memory :
+                     (RegWrite_m & forward_Rs_m & (memRead)) ? Rd_data_memory :
                      (RegWrite_m & forward_Rs_m) ? Rd_data_mStage :
                      Rs_data_d;
 assign Rt_forward = (RegWrite_x & forward_Rt_x) ? Rd_data_x :
-                     (RegWrite_m & forward_Rt_m & (ld_ex | memRead)) ? Rd_data_memory :
+                     (RegWrite_m & forward_Rt_m & memRead) ? Rd_data_memory :
                      (RegWrite_m & forward_Rt_m) ? Rd_data_mStage :
                      Rt_data_d;
 

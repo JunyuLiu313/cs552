@@ -45,22 +45,49 @@ dff ERR         (.d((stall | stall_m) ? err_idex : (err_ifid | D_err)), .q(err_i
 wire halt = (branchTaken) ? 1'b0 : halt_d;
 dff HaltDX (.d((stall | stall_m) ? halt_x : halt), .q(halt_x), .clk(clk), .rst(rst));
 
+wire [2:0] Rd_ff;
+assign Rd_ff =  stall_m ? Rd_x :
+                stall ? 3'b000 :
+                Rd_d;
+    
+wire [4:0] op_ff =  stall_m ? opcode_x :
+                    stall ? 5'h01 :
+                    opcode_d;
+
+wire RegWrite_ff =  stall_m ? RegWrite_x :
+                    stall ? 1'b0 :
+                    RegWrite_d;
+
 dff RsDX[15:0]  (.d((stall | stall_m) ? RsData_x : RsData_d), .q(RsData_x), .clk(clk), .rst(rst));
 dff RtDX[15:0]  (.d((stall | stall_m) ? RtData_x : RtData_d), .q(RtData_x), .clk(clk), .rst(rst));
 dff ImmDX[15:0] (.d((stall | stall_m) ? Imm_x : Imm_d), .q(Imm_x), .clk(clk), .rst(rst));
 dff PCDX[15:0]  (.d((stall | stall_m) ? currPC_x : currPC_d), .q(currPC_x), .clk(clk), .rst(rst));
-dff OpDX[4:0]   (.d((stall | stall_m) ? opcode_x : opcode_d), .q(opcode_x), .clk(clk), .rst(rst));
+// dff OpDX[4:0]   (.d((stall | stall_m) ? opcode_x : opcode_d), .q(opcode_x), .clk(clk), .rst(rst));
+dff OpDX[4:0]   (.d(op_ff), .q(opcode_x), .clk(clk), .rst(rst));
 
 dff funcDX[1:0]   (.d((stall | stall_m) ? func_x : func_d), .q(func_x), .clk(clk), .rst(rst));
 dff reSelDX[1:0]  (.d((stall | stall_m) ? resultSel_x : resultSel_d), .q(resultSel_x), .clk(clk), .rst(rst));
 
-dff MemReadDX   (.d((stall | stall_m) ? MemRead_x : MemRead_d), .q(MemRead_x), .clk(clk), .rst(rst));
-dff MemWriteDX  (.d((stall | stall_m) ? MemWrite_x : MemWrite_d), .q(MemWrite_x), .clk(clk), .rst(rst | halt_x));
-dff MemToRegDX  (.d((stall | stall_m) ? MemToReg_x : MemToReg_d), .q(MemToReg_x), .clk(clk), .rst(rst));
+wire MemRead_ff, MemWrite_ff, MemToReg_ff;
+assign MemRead_ff = stall_m ? MemRead_x :
+                    stall ? 1'b0 : 
+                    MemRead_d;
+assign MemWrite_ff = stall_m ? MemWrite_x :
+                    stall ? 1'b0 : 
+                    MemWrite_d;
+assign MemToReg_ff =stall_m ? MemToReg_x : 
+                    stall ? 1'b0 :
+                    MemToReg_d;
+
+
+dff MemReadDX   (.d(MemRead_ff), .q(MemRead_x), .clk(clk), .rst(rst));
+dff MemWriteDX  (.d(MemWrite_ff), .q(MemWrite_x), .clk(clk), .rst(rst));
+dff MemToRegDX  (.d(MemToReg_ff), .q(MemToReg_x), .clk(clk), .rst(rst));
 dff branchDX    (.d((stall | stall_m) ? branch_x : branch_d), .q(branch_x), .clk(clk), .rst(rst));
 dff savePcDX    (.d((stall | stall_m) ? 1'b0 : savePC_d), .q(savePC_x), .clk(clk), .rst(rst));
 
-dff RegWriteDX  (.q(RegWrite_x), .d((stall | stall_m) ? RegWrite_x: RegWrite_d), .clk(clk), .rst(rst));
+// dff RegWriteDX  (.q(RegWrite_x), .d((stall | stall_m) ? RegWrite_x: RegWrite_d), .clk(clk), .rst(rst));
+dff RegWriteDX  (.q(RegWrite_x), .d(RegWrite_ff), .clk(clk), .rst(rst));
 dff RdDX [2:0]  (.q(Rd_x), .d((stall | stall_m) ? Rd_x : Rd_d), .clk(clk), .rst(rst));
 
 dff nopDX       (.d((stall | stall_m) ? 1'b1 : nop_d), .q(nop_x), .clk(clk), .rst(rst));

@@ -13,7 +13,7 @@ module proc (/*AUTOARG*/
    input wire rst;
    output wire err;
 
-   wire halt;
+   // wire halt;
    wire nop_d, nop_x, nop_m, nop_wb;
    wire [15:0] PC, pc_f, pc_d, pc_x, nxtPC_x;
    wire [15:0] instr_f, instr_d, instr_x, instr_m, instr_wb;
@@ -70,7 +70,7 @@ module proc (/*AUTOARG*/
    wire cacheHit_f, cacheHit_m;
    wire done_f, done_m;
    
-   // assign stall_f = 1'b0;
+   assign stall_f = 1'b0;
 
    /* your code here -- should include instantiations of fetch, decode, execute, mem and wb modules */
    hazardControl h0 (//inputs
@@ -86,7 +86,8 @@ module proc (/*AUTOARG*/
                      .stall(stall_d), .forward(forward), .Rs_forward(Rs_data_forward), .Rt_forward(Rt_data_forward));
 
    fetch f0       (  .newPC(nxtPC_x), .INSTR(instr_f), .clk(clk), .rst(rst), .incPC(pc_f), .branchTaken(branchTaken_x), .stall(stall_d), .err(err_instr_mem),
-                     .done(done_f), .cacheHit(cacheHit_f), .stall_mem(stall_f)
+                     // .done(done_f), .cacheHit(cacheHit_f), .stall_mem(stall_f),
+                     .stall_data_mem(stall_m)
                   );
    
    if_id ifid0    (  .clk(clk), .rst(rst), .halt_d(halt_d),
