@@ -70,7 +70,7 @@ module proc (/*AUTOARG*/
    wire cacheHit_f, cacheHit_m;
    wire done_f, done_m;
    
-   assign stall_f = 1'b0;
+   // assign stall_f = 1'b0;
 
    /* your code here -- should include instantiations of fetch, decode, execute, mem and wb modules */
    hazardControl h0 (//inputs
@@ -86,7 +86,7 @@ module proc (/*AUTOARG*/
                      .stall(stall_d), .forward(forward), .Rs_forward(Rs_data_forward), .Rt_forward(Rt_data_forward));
 
    fetch f0       (  .newPC(nxtPC_x), .INSTR(instr_f), .clk(clk), .rst(rst), .incPC(pc_f), .branchTaken(branchTaken_x), .stall(stall_d), .err(err_instr_mem),
-                     // .done(done_f), .cacheHit(cacheHit_f), .stall_mem(stall_f),
+                     .done(done_f), .cacheHit(cacheHit_f), .stall_mem(stall_f),
                      .stall_data_mem(stall_m)
                   );
    
@@ -149,7 +149,8 @@ module proc (/*AUTOARG*/
                      .WriteData(Rt_m), 
                      .MemWrite(MemWrite_m), .MemRead(MemRead_m), .ReadData(memResult_m),
                      .err(err_data_mem),
-                     .done(done_m), .cacheHit(cacheHit_m), .stall_mem(stall_m)
+                     .done(done_m), .cacheHit(cacheHit_m), .stall_mem(stall_m),
+                     .halt_wb(halt_wb)
                   );
 
    mem_wb imemwb0 (  .clk(clk), .rst(rst), .nop_m(nop_m), .nop_w(nop_wb), 
