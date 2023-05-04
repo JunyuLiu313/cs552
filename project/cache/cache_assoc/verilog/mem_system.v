@@ -218,8 +218,8 @@ module mem_system(/*AUTOARG*/
 
       
       // cache inputs default values
-      enable_c0   =  (state == DONE) ? ~way_ff_q & Rd_ff : ~way_ff_q & (Rd_ff | Wr_ff);
-      enable_c1   =  (state == DONE) ? way_ff_q & Rd_ff : way_ff_q & (Rd_ff | Wr_ff);
+      enable_c0   =  (state == COMP2) ? ~way_ff_q & Rd_ff : ~way_ff_q & (Rd_ff | Wr_ff);
+      enable_c1   =  (state == COMP2) ? way_ff_q & Rd_ff : way_ff_q & (Rd_ff | Wr_ff);
       // enable_c0   = ~victimway_q;
       // enable_c1   = victimway_q;
       tag_in      = Addr_ff[15:11];
@@ -381,23 +381,15 @@ module mem_system(/*AUTOARG*/
          end
 
          COMP2: begin
+            enable_c0   = ~way_ff_q;
+            enable_c1   = way_ff_q;
             data_in     = DataIn;
             write_c0    = Wr_ff;
             write_c1    = Wr_ff;
-            comp_c0     = Rd_ff | Wr_ff;
-            comp_c1     = Rd_ff | Wr_ff;
-
-            nxt_state   = DONE;
-         end
-
-         DONE: begin
-            //enable_c0 = 1'b1;
-            //enable_c1 = 1'b1;
-            comp_c0     = Rd_ff; //1'b1;
-            comp_c1     = Rd_ff; //1'b1;
-            write_c0    = 1'b0; //Wr_ff;
-            write_c1    = 1'b0; //Wr_ff;
+            comp_c0     = Wr_ff;
+            comp_c1     = Wr_ff;
             Done        = 1'b1;
+            
             nxt_state   = IDLE;
          end
 
