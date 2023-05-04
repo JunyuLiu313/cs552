@@ -5,9 +5,39 @@
    Description     : This is the module for the overall fetch stage of the processor.
 */
 `default_nettype none
-module fetch (/* TODO: Add appropriate inputs/outputs for your fetch stage here*/);
+module fetch (
+				newPC, INSTR, clk, rst, incPC, branchTaken, stall, err,
+				done, cacheHit, stall_mem
+			);
+	input wire [15:0] newPC;
+	input wire clk, rst, branchTaken, stall;
 
-   // TODO: Your code here
-   
+	output wire [15:0] INSTR;
+	/*output*/ wire [15:0]currPC;	
+	output wire [15:0] incPC;
+	output wire err;
+
+	// memory signals
+	output wire done, cacheHit;
+	output wire stall_mem;
+
+	wire [15:0] PC_i, PC_stall, PCinc_i;
+	assign PCinc_i = currPC;
+	cla16b iCLA0	(.sum(incPC), .cOut(), .inA(PCinc_i), .inB(16'h0002), .cIn(1'b0));
+	
+	assign PC_stall = (stall | stall_mem) ? currPC : incPC;
+	assign PC_i = branchTaken ? newPC : PC_stall;
+
+	dff PCReg [15:0] (.q(currPC), .d(/*stall_mem ? currPC : */PC_i), .clk(clk), .rst(rst));
+
+	// change the memory
+	// memory2c_align 	IMEM 	(.data_out(INSTR), .data_in(16'b0), .addr(currPC), .enable(1'b1), .wr(1'b0), .createdump(1'b0), .clk(clk), .rst(rst), .err(err));
+
+	// stall memory
+	// when stalling, the instruction should also remains the same
+	stallmem IMEM (.DataOut(INSTR), .Done(done), .Stall(stall_mem), .CacheHit(cacheHit), .err(err), .Addr(currPC), .DataIn(16'h0), .Rd(1'b1), .Wr(1'b0), .createdump(1'b0), .clk(clk), .rst(rst));
+
+
+	
 endmodule
 `default_nettype wire

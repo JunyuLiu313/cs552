@@ -5,9 +5,18 @@
    Description     : This is the module for the overall Write Back stage of the processor.
 */
 `default_nettype none
-module wb (/* TODO: Add appropriate inputs/outputs for your WB stage here*/);
+module wb ( // inputs
+            clk, rst, MemtoReg, exResult, memResult, 
+            // outputs
+            wbResult);
 
-   // TODO: Your code here
+input wire MemtoReg, clk, rst;
+input wire [15:0] exResult, memResult;
+
+output wire [15:0] wbResult;
+
+assign wbResult = MemtoReg ? memResult : exResult;
+
    
 endmodule
 `default_nettype wire

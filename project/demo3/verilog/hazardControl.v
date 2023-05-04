@@ -11,8 +11,9 @@ module hazardControl(//inputs
                      ResultSel_x, ResultSel_m, ResultSel_d,
                      RegWrite_x, RegWrite_m,
                      opcode_d, opcode_x,
-                     Rd_data_x, Rd_data_mStage, Rd_data_memory,
+                     Rd_data_x, Rd_data_mStage, Rd_data_memory, // Rd_data_memory is the loaded data from memory
                      Rs_data_d, Rt_data_d,
+                     memRead,
                      //outputs 
                      stall, forward, Rs_forward, Rt_forward);
 input wire [2:0] Rd_d, Rs_d, Rt_d;
@@ -21,6 +22,7 @@ input wire [1:0] ResultSel_x, ResultSel_m, ResultSel_d;
 input wire [4:0] opcode_d, opcode_x;
 input wire RegWrite_x, RegWrite_m;
 input wire [15:0] Rd_data_x, Rd_data_mStage, Rd_data_memory, Rs_data_d, Rt_data_d;
+input wire memRead;
 
 output wire stall, forward;
 output wire [15:0] Rs_forward, Rt_forward;
@@ -64,7 +66,7 @@ wire ld_ex;
 assign ld_ex = (opcode_x == 5'b10001);
 
 // comb logic for determining stall
-assign stall = ld_ex & RegWrite_x; // (opcode_d == 5'b10001) ;
+assign stall = ld_ex & RegWrite_x & (forward_Rs_x | forward_Rt_x); // (opcode_d == 5'b10001) ;
 
 // forwarding part
 // Rd_data_mStage could be from memory instead of from execute
@@ -75,11 +77,11 @@ assign forward = ((forward_Rt_x | forward_Rs_x) & (RegWrite_x) & ~ld_ex) | ((for
    or the data from memory using load instruction
 */
 assign Rs_forward = (RegWrite_x & forward_Rs_x) ? Rd_data_x :
-                     (RegWrite_m & forward_Rs_m & ld_ex) ? Rd_data_memory :
+                     (RegWrite_m & forward_Rs_m & (ld_ex | memRead)) ? Rd_data_memory :
                      (RegWrite_m & forward_Rs_m) ? Rd_data_mStage :
                      Rs_data_d;
 assign Rt_forward = (RegWrite_x & forward_Rt_x) ? Rd_data_x :
-                     (RegWrite_m & forward_Rt_m & ld_ex) ? Rd_data_memory :
+                     (RegWrite_m & forward_Rt_m & (ld_ex | memRead)) ? Rd_data_memory :
                      (RegWrite_m & forward_Rt_m) ? Rd_data_mStage :
                      Rt_data_d;
 

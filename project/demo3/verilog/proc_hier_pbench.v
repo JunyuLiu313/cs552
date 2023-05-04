@@ -40,7 +40,9 @@ module proc_hier_pbench();
    integer     DCacheReq_count;
    integer     ICacheReq_count;
    
-   proc_hier DUT();   
+   proc_hier DUT();
+
+   
 
    initial begin
       $display("Hello world...simulation starting");
@@ -126,51 +128,51 @@ module proc_hier_pbench();
    // Edit the example below. You must change the signal
    // names on the right hand side
     
-   assign PC = DUT.PC_Out;
-   assign Inst = DUT.Instruction_f;
+   assign PC = DUT.p0.pc_f;
+   assign Inst = DUT.p0.instr_f;
    
-   assign RegWrite = DUT.p0.regWrite;
+   assign RegWrite = DUT.p0.d0.RegWrite_wb;
    // Is register file being written to, one bit signal (1 means yes, 0 means no)
    //    
-   assign WriteRegister = DUT.p0.DstwithJmout;
+   assign WriteRegister = DUT.p0.imemwb0.Rd_wb;
    // The name of the register being written to. (3 bit signal)
    
-   assign WriteData = DUT.p0.wData;
+   assign WriteData = DUT.p0.iwb0.wbResult;
    // Data being written to the register. (16 bits)
    
-   assign MemRead =  (DUT.p0.memRxout & ~DUT.p0.notdonem);
+   assign MemRead =  DUT.p0.MemRead_m & ~DUT.p0.stall_m;
    // Is memory being read, one bit signal (1 means yes, 0 means no)
    
-   assign MemWrite = (DUT.p0.memWxout & ~DUT.p0.notdonem);
+   assign MemWrite = DUT.p0.MemWrite_m & ~DUT.p0.stall_m;
    // Is memory being written to (1 bit signal)
    
-   assign MemAddress = DUT.p0.data1out;
+   assign MemAddress = DUT.p0.memAddr_m;
    // Address to access memory with (for both reads and writes to memory, 16 bits)
    
-   assign MemDataIn = DUT.p0.data2out;
+   assign MemDataIn = DUT.p0.Rt_m;
    // Data to be written to memory for memory writes (16 bits)
    
-   assign MemDataOut = DUT.p0.readData;
+   assign MemDataOut = DUT.p0.memResult_m;
    // Data read from memory for memory reads (16 bits)
 
-   // new added 05/03
-   assign ICacheReq = DUT.p0.readData;
-   // Signal indicating a valid instruction read request to cache
-   // Above assignment is a dummy example
+   // // new added 05/03
+   // assign ICacheReq = DUT.p0.readData;
+   // // Signal indicating a valid instruction read request to cache
+   // // Above assignment is a dummy example
    
-   assign ICacheHit = DUT.p0.readData;
-   // Signal indicating a valid instruction cache hit
-   // Above assignment is a dummy example
+   // assign ICacheHit = DUT.p0.readData;
+   // // Signal indicating a valid instruction cache hit
+   // // Above assignment is a dummy example
 
-   assign DCacheReq = DUT.p0.readData;
-   // Signal indicating a valid instruction data read or write request to cache
-   // Above assignment is a dummy example
-   //    
-   assign DCacheHit = DUT.p0.readData;
-   // Signal indicating a valid data cache hit
-   // Above assignment is a dummy example
+   // assign DCacheReq = DUT.p0.readData;
+   // // Signal indicating a valid instruction data read or write request to cache
+   // // Above assignment is a dummy example
+   // //    
+   // assign DCacheHit = DUT.p0.readData;
+   // // Signal indicating a valid data cache hit
+   // // Above assignment is a dummy example
    
-   assign Halt = DUT.p0.haltxout;
+   assign Halt = DUT.p0.halt_wb;
    // Processor halted
    
    
