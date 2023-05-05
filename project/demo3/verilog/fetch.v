@@ -39,7 +39,7 @@ module fetch (
 
 	// stall memory
 	// when stalling, the instruction should also remains the same
-	mem_system IMEM (.DataOut(INSTR), .Done(done), .Stall(stall_imem), .CacheHit(cacheHit), .err(err), .Addr(currPC), .DataIn(16'h0), .Rd(1'b1), .Wr(1'b0), .createdump(1'b0), .clk(clk), .rst(rst));
+	mem_system IMEM (.DataOut(INSTR), .Done(done), .Stall(stall_imem), .CacheHit(cacheHit), .err(err), .Addr(currPC), .DataIn(16'h0), .Rd(1'b1), .Wr(1'b0), .createdump(branchTaken), .clk(clk), .rst(rst | branchTaken));
 
 	assign stall_mem = ~done; // when I$ is done, we should proceed -- otherwise we are in the middle of a request, so we should stall
 	

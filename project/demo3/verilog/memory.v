@@ -24,14 +24,16 @@ input wire halt_wb;
 
 // memory2c_align D_MEM (.data_out(ReadData), .data_in(WriteData), .addr(Addr),
 //                      .enable(MemRead|MemWrite), .wr(MemWrite), .createdump(halt), .clk(clk), .rst(rst), .err(err));
+wire [15:0] Addr_i;
+assign Addr_i = MemRead | MemWrite ? Addr : 16'b0;
 
 wire stall_dmem;
 assign stall_mem = ((MemRead & ~halt_wb) | (MemWrite & ~halt_wb)) & ~done;
 wire err_dmem;
 assign err = err_dmem & (MemRead | MemWrite);
 
-mem_system DMEM (.DataOut(ReadData), .Done(done), .Stall(stall_dmem), .CacheHit(cacheHit), .err(err_dmem), .Addr(Addr), .DataIn(WriteData), 
-               .Rd(MemRead & ~halt_wb), .Wr(MemWrite & ~halt_wb), .createdump(halt), .clk(clk), .rst(rst));
+mem_system DMEM (.DataOut(ReadData), .Done(done), .Stall(stall_dmem), .CacheHit(cacheHit), .err(err_dmem), .Addr(Addr_i), .DataIn(WriteData), 
+               .Rd(MemRead & ~halt_wb), .Wr(MemWrite & ~halt_wb), .createdump(halt_wb), .clk(clk), .rst(rst));
    
 endmodule
 `default_nettype wire
