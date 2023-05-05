@@ -42,8 +42,10 @@ input wire stall_m;
 
 dff ERR         (.d((stall | stall_m) ? err_idex : (err_ifid | D_err)), .q(err_idex), .clk(clk), .rst(rst));
 
-wire halt = (branchTaken) ? 1'b0 : halt_d;
-dff HaltDX (.d((stall | stall_m) ? halt_x : halt), .q(halt_x), .clk(clk), .rst(rst));
+wire halt = (branchTaken) ? 1'b0 :
+            (stall | stall_m) ? halt_x :
+            halt_d;
+dff HaltDX (.d(halt), .q(halt_x), .clk(clk), .rst(rst));
 
 wire [2:0] Rd_ff;
 assign Rd_ff =  stall_m ? Rd_x :
